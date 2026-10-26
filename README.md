@@ -22,7 +22,7 @@ Internet n’est pas nécessaire pour enregistrer une séance.
 Retrouve ici les **versions Android à installer**, les nouveautés et ce guide
 pour découvrir les différents modes de Power.
 
-A noter : Les images et une majeure partie de l'app sont produites par IA
+A noter : Les images et une majeure partie de l'app (l'après version 3.0.0) sont produites par IA
 ## Aperçu
 
 | Programmes | Exercices | Rapports |
