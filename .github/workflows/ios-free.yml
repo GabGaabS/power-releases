@@ -1,0 +1,80 @@
+# Public orchestration only; private sources and plaintext logs stay on the runner.
+name: Build iPhone IPA
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Reviewed private Power commit (40 hexadecimal characters)
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: power-iphone-build
+  cancel-in-progress: false
+jobs:
+  iphone:
+    if: github.repository == 'GabGaabS/power-releases' && github.ref == 'refs/heads/main' && github.actor == 'GabGaabS' && github.event_name == 'workflow_dispatch'
+    runs-on: macos-15
+    timeout-minutes: 60
+    permissions:
+      contents: write # Unpublished build draft only; never changes Latest.
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch reviewed sources with read-only access
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          SOURCE_KEY: ${{ secrets.POWER_IOS_SOURCE_READ_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ -n "$SOURCE_KEY" ]]
+          umask 077
+          {
+            printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$RUNNER_TEMP/power-hosts"
+            printf '%s\n' "$SOURCE_KEY" | tr -d '\r' > "$RUNNER_TEMP/power-source-key"
+            unset SOURCE_KEY
+            trap 'rm -f "$RUNNER_TEMP/power-source-key"' EXIT
+            export GIT_SSH_COMMAND="ssh -i $RUNNER_TEMP/power-source-key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/power-hosts"
+            git init "$RUNNER_TEMP/power-source"
+            git -C "$RUNNER_TEMP/power-source" remote add origin git@github.com:GabGaabS/power.git
+            git -C "$RUNNER_TEMP/power-source" config core.sparseCheckout true
+            printf '%s\n' '/lib/' '/assets/' '/ios/' '/tool/build-ios-unsigned.sh' '/tool/capture-ios-screenshots.sh' '/tool/ios_screenshots_demo.dart' '/pubspec.yaml' '/pubspec.lock' '/.gitattributes' > "$RUNNER_TEMP/power-source/.git/info/sparse-checkout"
+            git -C "$RUNNER_TEMP/power-source" fetch --depth=1 --filter=blob:none origin "$SOURCE_SHA"
+            git -C "$RUNNER_TEMP/power-source" checkout --detach FETCH_HEAD
+            [[ "$(git -C "$RUNNER_TEMP/power-source" rev-parse HEAD)" == "$SOURCE_SHA" ]]
+          } > "$RUNNER_TEMP/power-private-build.log" 2>&1 || { echo 'Source preparation failed; diagnostic will be encrypted.'; exit 1; }
+      - name: Build unsigned iPhone application privately
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            git clone --depth=1 --branch 3.41.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
+            export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
+            flutter --version
+            xcodebuild -version
+            bash "$RUNNER_TEMP/power-source/tool/build-ios-unsigned.sh"
+            touch "$RUNNER_TEMP/power-ipa-built"
+          } >> "$RUNNER_TEMP/power-private-build.log" 2>&1 || { echo 'iPhone compilation failed; diagnostic will be encrypted.'; exit 1; }
+          echo 'Unsigned iPhone application compiled.'
+      - name: Capture isolated iPhone simulator demo
+        id: screenshots
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
+          bash "$RUNNER_TEMP/power-source/tool/capture-ios-screenshots.sh" >> "$RUNNER_TEMP/power-private-build.log" 2>&1 || { echo 'Simulator capture failed; diagnostic will be encrypted.'; exit 1; }
+          touch "$RUNNER_TEMP/power-screenshots-built"
+      - name: Save unpublished build draft and encrypted diagnostic
+        if: always() && !cancelled()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          DIAGNOSTIC_PUBLIC_KEY: ${{ secrets.POWER_IOS_DIAGNOSTIC_PUBLIC_KEY }}
+        run: node .github/scripts/power-ios-delivery.mjs
