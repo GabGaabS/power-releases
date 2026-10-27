@@ -55,6 +55,11 @@ Depuis la version **6.5.0**, Power peut vérifier la présence d’une nouvelle
 release. Le réglage de vérification se trouve dans **Profil**. Le téléchargement
 et l’installation passent par Android, avec ton accord.
 
+À partir de **6.5.2**, une fenêtre te prévient dans l'app lorsqu'une nouvelle
+version est disponible. Elle présente seulement ses nouveautés, en petit,
+avec les choix **Voir la mise à jour** et **Plus tard**. Si une séance est
+ouverte, elle attend ton retour à l'écran principal.
+
 Tu peux aussi ouvrir cette page et télécharger le nouvel APK. Installe-le
 **par-dessus la version existante**, sans désinstaller Power : c’est ce qui
 permet de conserver les données locales. Une sauvegarde avant une mise à jour
