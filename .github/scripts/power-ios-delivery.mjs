@@ -39,6 +39,7 @@ export function validateContext(env) {
   assert.match(env.GITHUB_RUN_ID, /^[1-9][0-9]{0,19}$/);
 }
 async function exists(file) { try { await access(file); return true; } catch { return false; } }
+const diagnosticName = env => env.DELIVERY_STAGE === 'build' ? 'iphone-build-diagnostic.enc' : 'iphone-diagnostic.enc';
 async function regular(file, maxBytes) {
   const metadata = await lstat(file);
   assert.ok(metadata.isFile() && !metadata.isSymbolicLink());
@@ -51,7 +52,7 @@ export async function prepareOutputs(env) {
   await mkdir(out, { recursive: true });
   const log = path.join(root, 'power-private-build.log');
   const diagnostic = await exists(log) ? await readFile(log) : Buffer.from('Private preparation did not start.');
-  const sealed = path.join(out, 'iphone-diagnostic.enc');
+  const sealed = path.join(out, diagnosticName(env));
   await writeFile(sealed, sealDiagnostic(diagnostic, env.DIAGNOSTIC_PUBLIC_KEY));
   const files = [sealed];
   if (await exists(path.join(root, 'power-ipa-built'))) {
@@ -82,7 +83,17 @@ export async function prepareOutputs(env) {
   return files;
 }
 async function main() {
-  const env = process.env, files = await prepareOutputs(env);
+  const env = process.env;
+  validateContext(env);
+  let files;
+  try {
+    files = await prepareOutputs(env);
+  } catch (_) {
+    const sealed = path.join(env.RUNNER_TEMP, 'power-delivery', diagnosticName(env));
+    if (!await exists(sealed)) throw new Error('No encrypted diagnostic available.');
+    files = [sealed];
+    console.log('Build output incomplete; retaining only the encrypted diagnostic.');
+  }
   assert.ok(env.GH_TOKEN);
   const repo = 'GabGaabS/power-releases';
   const gh = args => execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -90,16 +101,23 @@ async function main() {
   await writeFile(input, JSON.stringify({ tag_name: `ios-build-${env.GITHUB_RUN_ID}`,
     target_commitish: 'main', name: 'INTERNAL iPhone build — DO NOT PUBLISH',
     draft: true, prerelease: true, make_latest: 'false',
-    body: 'Unpublished build for local verification. Unsigned iPhone IPA if compilation succeeded; isolated demo screenshots if capture succeeded. No physical device validation. Diagnostics are encrypted for a locally retained key. No source or plaintext log. This workflow never publishes or changes Latest.' }));
-  const draft = JSON.parse(gh(['api', `repos/${repo}/releases`, '--method', 'POST', '--input', input]));
+    body: `Unpublished build for local verification. Reviewed source: ${env.SOURCE_SHA}. Unsigned iPhone IPA if compilation succeeded; isolated demo screenshots if capture succeeded. No physical device validation. Diagnostics are encrypted for a locally retained key. No source or plaintext log. This workflow never publishes or changes Latest.` }));
+  const existing = JSON.parse(gh(['api', `repos/${repo}/releases?per_page=100`]))
+    .find(release => release.tag_name === `ios-build-${env.GITHUB_RUN_ID}`);
+  const draft = existing ?? JSON.parse(gh(['api', `repos/${repo}/releases`, '--method', 'POST', '--input', input]));
   assert.ok(Number.isSafeInteger(draft.id) && draft.draft && draft.prerelease);
   for (const file of files) {
+    const prior = draft.assets.find(asset => asset.name === path.basename(file));
+    if (prior) {
+      assert.equal(prior.digest, `sha256:${crypto.createHash('sha256').update(await readFile(file)).digest('hex')}`);
+      continue;
+    }
     gh(['api', `https://uploads.github.com/repos/${repo}/releases/${draft.id}/assets?name=${encodeURIComponent(path.basename(file))}`,
       '--method', 'POST', '--header', 'Content-Type: application/octet-stream', '--input', file]);
   }
   const verified = JSON.parse(gh(['api', `repos/${repo}/releases/${draft.id}`]));
   assert.equal(verified.draft, true);
-  assert.deepEqual(verified.assets.map(a => a.name).sort(), files.map(f => path.basename(f)).sort());
+  assert.ok(verified.assets.every(asset => /^(iphone(-build)?-diagnostic\.enc|Power-\d+\.\d+\.\d+\+\d+-ios-unsigned\.ipa(\.sha256)?|iphone-(programmes|exercices|calendrier|couleur-(volt|violet|cyan|green|orange|red))\.png)$/.test(asset.name)));
   for (const file of files) {
     const asset = verified.assets.find(a => a.name === path.basename(file));
     const expected = crypto.createHash('sha256').update(await readFile(file)).digest('hex');
