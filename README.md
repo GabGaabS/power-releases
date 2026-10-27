@@ -118,6 +118,8 @@ des consignes et une semaine allégée. Ce sont des bases à adapter à ton nive
 - Créer un programme ou une séance avec l’éditeur visuel.
 - Choisir un programme intégré et consulter son contenu avant de l’activer.
 - Planifier les jours d’entraînement dans le calendrier.
+- Changer la **semaine et le jour** d’une séance à venir depuis son menu **⋯**
+  dans le calendrier. Les séances déjà enregistrées restent protégées.
 - Ajouter un exercice existant ou en créer un directement depuis le sélecteur.
 - Classer les exercices par **groupe musculaire** ou par **mouvement** ; le choix
   est mémorisé séparément pour chaque discipline.
