@@ -15,7 +15,7 @@ concurrency:
 jobs:
   iphone:
     if: github.repository == 'GabGaabS/power-releases' && github.ref == 'refs/heads/main' && github.actor == 'GabGaabS' && github.event_name == 'workflow_dispatch'
-    runs-on: macos-15-intel
+    runs-on: macos-15
     timeout-minutes: 90
     permissions:
       contents: write # Unpublished build draft only; never changes Latest.
