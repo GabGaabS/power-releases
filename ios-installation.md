@@ -63,4 +63,3 @@ restent accessibles à tout moment.
 La compilation de l'IPA ne remplace pas un essai sur ton iPhone. Si une étape
 échoue, relève le message affiché et [signale-le ici](https://github.com/GabGaabS/power-releases/issues/new),
 avec le modèle d'iPhone et la version iOS, sans identifiants personnels.
-
