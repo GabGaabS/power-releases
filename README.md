@@ -8,6 +8,7 @@ Une application d’entraînement en français pour le **powerlifting**, la
 **musculation** et le **street workout**.
 
 [Télécharger la dernière version Android](https://github.com/GabGaabS/power-releases/releases/latest)
+· [Installer sur iPhone](ios-installation.md)
 · [Voir toutes les versions](https://github.com/GabGaabS/power-releases/releases)
 · [Signaler un problème](https://github.com/GabGaabS/power-releases/issues/new)
 
@@ -19,7 +20,7 @@ saisir tes séries, suivre tes performances et partager ta séance en story.
 L’historique d’entraînement est enregistré sur ton appareil : une connexion
 Internet n’est pas nécessaire pour enregistrer une séance.
 
-Retrouve ici les **versions Android à installer**, les nouveautés et ce guide
+Retrouve ici les **versions Android et iPhone à installer**, les nouveautés et ce guide
 pour découvrir les différents modes de Power.
 
 A noter : Les images et une majeure partie de l'app (l'après version 3.0.0) sont produites par IA
@@ -68,10 +69,17 @@ reste une bonne habitude.
 Si Android refuse la mise à jour, conserve l’application installée et signale
 le message affiché. Une désinstallation supprimerait les données locales.
 
-### Et sur iPhone ?
+## Installer Power sur iPhone
 
-Ce dépôt distribue les APK **Android**. Un fichier APK ne s’installe pas sur
-iPhone ; aucune distribution iOS n’est proposée ici.
+Sur **iOS 15 ou plus récent**, télécharge le fichier **`Power-…-ios-unsigned.ipa`**
+dans la [dernière release](https://github.com/GabGaabS/power-releases/releases/latest).
+L'installation se fait avec **AltStore Classic sur l'iPhone** et **AltServer sur
+ton PC Windows**, avec ton compte Apple personnel.
+
+Le [guide iPhone pas à pas](ios-installation.md) explique l'installation,
+l'import du fichier Power et le renouvellement. Avec un compte Apple gratuit,
+il faut renouveler les applications via AltStore avant leur expiration au bout
+de **sept jours**.
 
 ## Choisir son mode : Power, Muscu ou Street
 
@@ -230,7 +238,7 @@ le même pour garder les séances lisibles.
 
 Ouvre un [ticket](https://github.com/GabGaabS/power-releases/issues/new) en précisant :
 
-- la version de Power et la version d’Android ;
+- la version de Power et la version d’Android ou d’iOS ;
 - le modèle du téléphone ;
 - les étapes pour retrouver le problème ;
 - le résultat attendu et ce qui s’affiche ;
