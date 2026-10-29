@@ -152,6 +152,10 @@ historique à une IA. Relis le résultat et adapte-le avant de l’utiliser.
 
 ## Pendant la séance
 
+Depuis le tableau de bord, **Voir la séance** sous **Commencer** permet de
+consulter les exercices et les séries du prochain entraînement. Cet aperçu
+laisse tes saisies intactes ; reviens au tableau lorsque tu veux commencer.
+
 Retrouve tes exercices et tes séries, puis renseigne la charge, les répétitions
 et le RPE si tu le souhaites. Le système métrique ou impérial s’applique à
 l’affichage ; l’arrondi des charges est configurable.
@@ -173,6 +177,11 @@ Les rapports prennent en compte les séances terminées. Les valeurs absentes,
 comme un RPE non saisi, ne sont pas remplacées par des estimations dans les
 exports.
 
+Le **récap hebdomadaire** du tableau et celui partagé aux potes utilisent les
+séances terminées du mode choisi, à la date affichée dans le calendrier.
+Le volume correspond aux charges multipliées par les répétitions. Les meilleures
+charges sont celles réellement soulevées ; une estimation de 1RM reste distincte.
+
 ## Partager sa séance
 
 Prépare une image de séance, d’exercice ou de série depuis le partage.
@@ -192,6 +201,11 @@ d’amitié et de retrouver les statistiques que chacun choisit de partager.
 Les commentaires et réactions hebdomadaires sont accessibles entre potes
 acceptés, ainsi que sur ton propre profil. Les blocages et les réglages de
 visibilité restent applicables.
+
+Un compteur sur **Potes** indique les nouveaux commentaires reçus sur ton récap.
+La **cloche** ouvre ton fil de commentaires. Les messages lus restent marqués
+comme tels à la prochaine ouverture de Power. Ces notifications sont visibles
+dans l'app, lorsqu'elle est ouverte ou à ton retour.
 
 Les fonctions sociales nécessitent une connexion. Un problème réseau ou un
 refus de commentaire ne supprime pas tes séances locales.
