@@ -31,7 +31,7 @@ A noter : Les images et une majeure partie de l'app (l'après version 3.0.0) son
 | <img src="screenshots/programmes.png" alt="Catalogue des programmes Muscu dans Power" width="260"> | <img src="screenshots/exercices.png" alt="Exercices classés par groupe musculaire" width="260"> | <img src="screenshots/rapports.png" alt="Rapport d’entraînement avec séances, séries et groupes musculaires" width="260"> |
 
 <div align="center">
-<img src="screenshots/partage-story.png" alt="Préparation d’une story avec une carte récapitulative des exercices" width="290">
+<img src="screenshots/partage-story.png" alt="Exemple de fiche Power à partager en story, avec exercices et séries" width="290">
 </div>
 
 *Captures de démonstration réalisées avec les écrans de Power et des données
