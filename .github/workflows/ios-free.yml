@@ -74,7 +74,7 @@ jobs:
         id: screenshots
         if: steps.build.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 25
+        timeout-minutes: 40
         shell: bash
         run: |
           set -euo pipefail
