@@ -34,15 +34,15 @@ jobs:
           [[ -n "$SOURCE_KEY" ]]
           umask 077
           (
+            trap 'rm -f "$RUNNER_TEMP/power-source-key"' EXIT
             printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$RUNNER_TEMP/power-hosts"
             printf '%s\n' "$SOURCE_KEY" | tr -d '\r' > "$RUNNER_TEMP/power-source-key"
             unset SOURCE_KEY
-            trap 'rm -f "$RUNNER_TEMP/power-source-key"' EXIT
             export GIT_SSH_COMMAND="ssh -i $RUNNER_TEMP/power-source-key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/power-hosts"
             git init "$RUNNER_TEMP/power-source"
             git -C "$RUNNER_TEMP/power-source" remote add origin git@github.com:GabGaabS/power.git
             git -C "$RUNNER_TEMP/power-source" config core.sparseCheckout true
-            printf '%s\n' '/lib/' '/assets/' '/ios/' '/tool/build-ios-unsigned.sh' '/tool/capture-ios-screenshots.sh' '/tool/ios_screenshots_demo.dart' '/pubspec.yaml' '/pubspec.lock' '/.gitattributes' > "$RUNNER_TEMP/power-source/.git/info/sparse-checkout"
+            printf '%s\n' '/lib/' '/assets/' '/ios/' '/tool/build-ios-unsigned.sh' '/tool/ci-public/power-ios-delivery.mjs' '/tool/prepare_native_sqlite.dart' '/tool/prepare-ios-native-crypto.sh' '/tool/verify_ios_ipa.py' '/tool/capture-ios-screenshots.sh' '/tool/ios_screenshots_demo.dart' '/pubspec.yaml' '/pubspec.lock' '/.gitattributes' > "$RUNNER_TEMP/power-source/.git/info/sparse-checkout"
             git -C "$RUNNER_TEMP/power-source" fetch --depth=1 --filter=blob:none origin "$SOURCE_SHA"
             git -C "$RUNNER_TEMP/power-source" checkout --detach FETCH_HEAD
             [[ "$(git -C "$RUNNER_TEMP/power-source" rev-parse HEAD)" == "$SOURCE_SHA" ]]
@@ -53,6 +53,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          [[ ! -e "$RUNNER_TEMP/power-source-key" ]]
           (
             git clone --depth=1 --branch 3.41.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
             export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
@@ -74,7 +75,7 @@ jobs:
         id: screenshots
         if: steps.build.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 40
+        timeout-minutes: 25
         shell: bash
         run: |
           set -euo pipefail

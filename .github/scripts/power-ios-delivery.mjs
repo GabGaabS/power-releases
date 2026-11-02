@@ -7,6 +7,26 @@ import { execFileSync } from 'node:child_process';
 import { access, copyFile, lstat, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 
 const aad = Buffer.from('power-iphone-diagnostic-v1');
+// Keep the source release label in the filename while using Apple's numeric
+// version fields inside the app. This same parser is used by the Mac packager.
+export function iosReleaseMetadata(sourceVersion) {
+  assert.equal(typeof sourceVersion, 'string');
+  assert.ok(sourceVersion.length <= 128);
+  const match = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\+([1-9]\d{0,8})$/.exec(sourceVersion);
+  assert.ok(match, 'Expected an explicit semver release and positive build number');
+  assert.ok(!match[4]?.split('.').some(part => /^\d+$/.test(part) && part.length > 1 && part.startsWith('0')));
+  return { version: `${match[1]}.${match[2]}.${match[3]}`, build: match[5],
+    sourceVersion, ipaName: `Power-${sourceVersion}-ios-unsigned.ipa` };
+}
+export function unsignedIpaName(name) {
+  const match = /^Power-(.+)-ios-unsigned\.ipa$/.exec(name);
+  if (!match) return false;
+  try { return iosReleaseMetadata(match[1]).ipaName === name; } catch { return false; }
+}
+export function allowedOutputName(name) {
+  return /^(iphone(-build)?-diagnostic\.enc|iphone-(programmes|exercices|calendrier|couleur-(volt|violet|cyan|green|orange|red))\.png)$/.test(name)
+    || unsignedIpaName(name) || (name.endsWith('.sha256') && unsignedIpaName(name.slice(0, -7)));
+}
 export function sealDiagnostic(data, publicKey) {
   assert.ok(Buffer.isBuffer(data) && data.length <= 32 * 1024 * 1024);
   const key = crypto.randomBytes(32), iv = crypto.randomBytes(12);
@@ -57,7 +77,7 @@ export async function prepareOutputs(env) {
   const files = [sealed];
   if (await exists(path.join(root, 'power-ipa-built'))) {
     const folder = path.join(root, 'power-source/build/ios/unsigned');
-    const names = (await readdir(folder)).filter(name => /^Power-\d+\.\d+\.\d+\+\d+-ios-unsigned\.ipa$/.test(name));
+    const names = (await readdir(folder)).filter(unsignedIpaName);
     assert.equal(names.length, 1);
     const name = names[0], ipa = path.join(folder, name);
     await regular(ipa, 512 * 1024 * 1024);
@@ -117,7 +137,7 @@ async function main() {
   }
   const verified = JSON.parse(gh(['api', `repos/${repo}/releases/${draft.id}`]));
   assert.equal(verified.draft, true);
-  assert.ok(verified.assets.every(asset => /^(iphone(-build)?-diagnostic\.enc|Power-\d+\.\d+\.\d+\+\d+-ios-unsigned\.ipa(\.sha256)?|iphone-(programmes|exercices|calendrier|couleur-(volt|violet|cyan|green|orange|red))\.png)$/.test(asset.name)));
+  assert.ok(verified.assets.every(asset => allowedOutputName(asset.name)));
   for (const file of files) {
     const asset = verified.assets.find(a => a.name === path.basename(file));
     const expected = crypto.createHash('sha256').update(await readFile(file)).digest('hex');
@@ -127,5 +147,13 @@ async function main() {
   console.log('Unpublished iPhone build retained; allowed files and hashes verified.');
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main().catch(() => { console.error('Private build delivery failed. No source or plaintext diagnostic was published.'); process.exitCode = 1; });
+  if (process.argv[2] === '--release-metadata') {
+    try {
+      assert.equal(process.argv.length, 4);
+      const metadata = iosReleaseMetadata(process.argv[3]);
+      console.log([metadata.version, metadata.build, metadata.sourceVersion, metadata.ipaName].join('\t'));
+    } catch { console.error('Invalid Power release version.'); process.exitCode = 1; }
+  } else {
+    main().catch(() => { console.error('Private build delivery failed. No source or plaintext diagnostic was published.'); process.exitCode = 1; });
+  }
 }
