@@ -1,70 +1,93 @@
-# Installer Power 7.0.0-beta.1+71 sur Android
+# Passer de Power V6 à la bêta V7 sur Android
 
-Cette bêta privée remplace Power V6. **Garde Power installée : ne la désinstalle
-pas et n’efface pas ses données.** Power Preview reste une application séparée.
-Utilise l’APK de bêta fourni par GabGaabS ; le lien public « dernière version »
-peut encore proposer la V6.
-Ce guide accompagne uniquement le fichier `Power-7.0.0-beta.1+71-android.apk`
-de la préversion publiée par GabGaabS. L’APK universel utilise la signature
-habituelle de Power ; les accès serveur V7 sont activés.
+La **7.0.0-beta.1+71 est disponible** pour les utilisateurs actuels de Power V6.
+Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
+Power directement et reprend automatiquement les données du téléphone.
+**Ne désinstalle pas Power et n’efface pas ses données.**
 
-Empreinte SHA-256 de cet APK :
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.1%2B71/Power-7.0.0-beta.1%2B71-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.1%2B71).
+Le fichier s’appelle `Power-7.0.0-beta.1+71-android.apk` et conserve la signature
+habituelle de Power. Son empreinte SHA-256 est :
 `743a855abf823950d243ec029aab5964090fac817313024935ae579f22a261dd`.
 
-1. Dans ta V6, vérifie ton programme actif, quelques séances et ta progression.
-   Conserve aussi les anciennes sauvegardes dont tu disposes.
-2. Ouvre `Power-7.0.0-beta.1+71-android.apk`, puis choisis **Mettre à jour**.
-   Si Android annonce un conflit ou demande de désinstaller Power, arrête ici :
-   n’accepte pas de perdre tes données pour forcer l’installation.
-3. Au premier démarrage, attends la préparation de la copie locale. Dans
-   **Profil → Compte et récupération**, vérifie son bilan puis utilise
-   **Exporter la copie avant migration**. Garde le ZIP dans un emplacement privé,
-   idéalement aussi hors du téléphone. Il contient ton historique ; ne le publie
-   pas dans GitHub ou une discussion publique.
-4. Vérifie que tes programmes, séances, séries, charges, réglages et progression
-   sont toujours présents avant de préparer ton compte.
-5. Si ton compte V6 était anonyme, choisis **Créer et relier mon compte** depuis
-   ce téléphone. Saisis toi-même ton adresse, ton mot de passe et les informations
-   demandées, puis vérifie l’e-mail. Si tu disposes déjà du compte qui possédait
-   cet historique, choisis **Connexion → Récupérer mon compte historique** :
-   l’app vérifiera qu’il correspond avant la reconnexion. **Actualiser un compte
-   déjà lié** sert à rafraîchir le compte encore présent sur ce téléphone. En cas
-   de conflit, garde l’app et sa copie en place ; ne crée pas un autre compte
-   pour contourner l’erreur.
-6. Après la connexion, complète toi-même la date et les conditions demandées.
-   Si un e-mail de vérification est nécessaire, regarde aussi les indésirables.
-   Ne transmets ton mot de passe, tes codes ou tes liens de récupération à personne.
-7. Choisis tes partages et autorisations sociales. L’apparition dans un classement,
-   les demandes d’amis/coach, la sauvegarde privée en ligne, les statistiques
-   d’utilisation et les annonces ont leurs propres réglages.
-8. Vérifie une dernière fois les mêmes séances, leurs séries et charges, ton
-   programme actif, tes XP et trophées. Ferme puis rouvre Power sans réseau pour
-   confirmer que ton historique reste accessible ; rétablis ensuite le réseau.
+## 1. Faire une copie depuis V6, avant la mise à jour
 
-Pour le retour à GabGaabS, indique simplement la version installée, si les données
-sont conservées et l’éventuel message d’erreur. Garde le ZIP en privé et masque les
-informations personnelles sur les captures. Si un historique semble manquer,
-arrête les changements de compte et conserve l’app ainsi que toutes les copies.
+1. Dans **Power V6**, ouvre l’onglet **Profil**, puis descends jusqu’à **GESTION**.
+2. Appuie sur **Exporter la base de données**, puis sur **Base complète**
+   (« Export avec les performances et l’historique »).
+3. Si Android demande une autorisation de stockage pour cet export, autorise
+   Power puis reviens dans l’app. Dans le choix de dossier, sélectionne un
+   dossier personnel que tu retrouveras dans l’app **Fichiers**, par exemple
+   un dossier de sauvegardes dans Documents, puis valide le choix du dossier.
+4. Attends le message **Base exportée vers…**. Dans **Fichiers**, ouvre le dossier
+   choisi et vérifie la présence de `power_backup_full_<date-et-heure>.zip`.
+   Garde ce ZIP et tes anciennes sauvegardes. Fais aussi une copie hors du
+   téléphone, par exemple sur ton ordinateur personnel par USB. Tu peux utiliser
+   le partage de l’app Fichiers vers un stockage privé ; cet export Power V6
+   ne propose pas lui-même de bouton de partage.
+5. Note ton programme actif et vérifie quelques séances récentes et anciennes,
+   avec leurs séries et charges, ainsi que tes XP et trophées. Cela permettra de
+   comparer après la mise à jour.
 
-Le suivi local reste utilisable sans serveur. Une connexion peut être nécessaire
-pour les fonctions sociales, préparer le compte ou restaurer une copie en ligne.
-Tu peux refuser Analytics et les annonces sans perdre les fonctions sportives.
-La publicité reste facultative : bannière fermable sur le Tableau et vidéo choisie
-pour 24 heures sans bannière. Google peut ne pas diffuser d’annonce dans la bêta.
-Sur une nouvelle installation Android de cette bêta, l’option des annonces réelles
-est activée au départ ; une désactivation déjà enregistrée reste conservée. Le
-contrôle Google du consentement précède les demandes d’annonces. Analytics reste
-désactivé par défaut. Tu peux revoir ces choix dans
-**Profil → Confidentialité et essais**.
+Choisis bien **Base complète** : l’export JSON d’un programme seul ne sauvegarde
+pas ton historique. Cette copie V6 est une précaution supplémentaire ; conserve
+surtout l’app et ses données sur le téléphone. Si l’export échoue ou que cette
+option manque, garde tout en place et demande de l’aide à GabGaabS avant la mise
+à jour. Ne publie aucun ZIP dans GitHub ou une discussion publique.
 
-Après avoir confirmé la conservation de tes données, tu peux vérifier l’icône
-d’historique à droite du nom d’un exercice. Pour tester une couverture personnelle,
-utilise un programme d’essai : choisis une image puis ferme et rouvre l’app.
-Une ancienne image déjà disparue du cache doit être rechoisie ; une sauvegarde
-SQLite ne contient pas automatiquement ses fichiers photo.
-L’essai de vidéo réalise la compression **localement** : il n’envoie pas encore
-la vidéo à un coach ou dans le cloud.
+## 2. Installer la bêta et exporter la copie V7
 
-La migration se fait **sur chaque téléphone** : le serveur ne possède pas toutes
-les séances et séries locales. Pour l’iPhone, utilise le guide iPhone de la même
-préversion et conserve sa V6 pendant la mise à jour AltStore / AltServer.
+1. Ouvre `Power-7.0.0-beta.1+71-android.apk` et choisis **Mettre à jour**.
+   Si Android demande de désinstaller Power ou signale un conflit, arrête ici
+   et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
+2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
+   importer manuellement ton ZIP V6** : la mise à jour conserve les données
+   existantes sur place.
+3. Avant de créer ou relier un compte, ouvre **Profil → Compte et récupération**.
+   Dans **Copie locale avant migration**, vérifie les nombres de programmes,
+   séances et séries, puis appuie sur **Exporter la copie avant migration**.
+4. Dans l’écran d’enregistrement Android, conserve le nom
+   **Power-avant-migration.zip**, choisis un dossier privé et valide
+   l’enregistrement. Vérifie ensuite le fichier dans **Fichiers** et copie-le
+   aussi hors du téléphone. Annuler le choix d’emplacement n’exporte pas le ZIP.
+   Garde cette deuxième copie avec celle de V6. Elle contient l’historique et
+   les réglages ; elle ne transfère pas à elle seule le compte, la connexion,
+   les fichiers audio ou les clés de messagerie.
+5. Compare les mêmes programmes, séances, séries, charges, XP et trophées qu’en
+   V6. S’ils semblent manquer ou différer, ne poursuis pas les changements de
+   compte : conserve l’app et les deux ZIP et signale le problème à GabGaabS.
+
+## 3. Préparer ton compte, puis tester
+
+Si ton compte V6 était anonyme, choisis **Créer et relier mon compte** depuis
+ce téléphone. Saisis toi-même ton adresse, ton mot de passe et les informations
+demandées, puis vérifie l’e-mail. Si tu avais déjà le compte e-mail associé à cet
+historique, choisis **Connexion → Récupérer mon compte historique**.
+**Actualiser un compte déjà lié** sert au compte encore présent sur le téléphone.
+En cas de conflit, garde l’app et ses copies : ne crée pas un autre compte pour
+contourner l’erreur. Complète toi-même la date et les conditions demandées.
+Ne communique aucun mot de passe, code ou lien de récupération.
+
+Choisis ensuite tes autorisations dans le Profil : classements, demandes
+d’amis/coach, sauvegarde privée en ligne, Analytics et annonces. Analytics reste
+désactivé par défaut. La bannière est fermable ; une vidéo publicitaire choisie
+peut donner 24 heures sans bannière. Google peut ne pas diffuser d’annonce.
+Ces choix se règlent dans **Profil → Confidentialité et essais**.
+
+Pour ce test avant la V7 finale :
+
+- Ferme puis rouvre Power sans réseau et vérifie ton historique, puis rétablis
+  la connexion. Le suivi sportif local reste utilisable sans serveur.
+- Teste l’icône d’historique à droite du nom d’un exercice et les fonctions
+  sociales avec les autres testeurs, selon vos autorisations.
+- Pour une image personnelle, utilise un programme d’essai, choisis une image,
+  puis ferme et rouvre l’app. Une ancienne image perdue du cache doit être
+  rechoisie ; un ZIP de base de données ne sauvegarde pas toutes les photos.
+- L’essai vidéo compresse le fichier **sur le téléphone** : il n’envoie pas encore
+  la vidéo à un coach ou dans le cloud.
+
+Indique à GabGaabS la version installée, si tes données sont conservées et le
+message d’erreur éventuel. Masque les informations personnelles sur les captures
+et garde les archives en privé. La migration se fait sur chaque téléphone :
+le serveur ne possède pas toutes les séances et séries locales.
