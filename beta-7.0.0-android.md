@@ -1,19 +1,19 @@
-# Passer de Power V6 à la bêta V7 sur Android
+# Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.1+71 est disponible** pour les utilisateurs actuels de Power V6.
+La **7.0.0-beta.2+72 est disponible** pour les utilisateurs de Power V6 et de la première bêta V7.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.1%2B71/Power-7.0.0-beta.1%2B71-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.1%2B71).
-Le fichier s’appelle `Power-7.0.0-beta.1+71-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.2%2B72/Power-7.0.0-beta.2%2B72-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.2%2B72).
+Le fichier s’appelle `Power-7.0.0-beta.2+72-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`743a855abf823950d243ec029aab5964090fac817313024935ae579f22a261dd`.
+`3a40a051eef151f34f68d1f20dd2f1edb315258400a9e5fbda7615f1cd61c675`.
 
-## 1. Faire une copie depuis V6, avant la mise à jour
+## 1. Exporter ses données avant la mise à jour
 
-1. Dans **Power V6**, ouvre l’onglet **Profil**, puis descends jusqu’à **GESTION**.
+1. Dans la version de **Power actuellement installée**, ouvre l’onglet **Profil**, puis descends jusqu’à **GESTION**.
 2. Appuie sur **Exporter la base de données**, puis sur **Base complète**
    (« Export avec les performances et l’historique »).
 3. Si Android demande une autorisation de stockage pour cet export, autorise
@@ -24,21 +24,26 @@ habituelle de Power. Son empreinte SHA-256 est :
    choisi et vérifie la présence de `power_backup_full_<date-et-heure>.zip`.
    Garde ce ZIP et tes anciennes sauvegardes. Fais aussi une copie hors du
    téléphone, par exemple sur ton ordinateur personnel par USB. Tu peux utiliser
-   le partage de l’app Fichiers vers un stockage privé ; cet export Power V6
-   ne propose pas lui-même de bouton de partage.
+   le partage de l’app Fichiers vers un stockage privé. Vérifie que ta copie reste
+   accessible hors de Power.
 5. Note ton programme actif et vérifie quelques séances récentes et anciennes,
    avec leurs séries et charges, ainsi que tes XP et trophées. Cela permettra de
    comparer après la mise à jour.
 
 Choisis bien **Base complète** : l’export JSON d’un programme seul ne sauvegarde
-pas ton historique. Cette copie V6 est une précaution supplémentaire ; conserve
+pas ton historique. Cette copie est une précaution supplémentaire ; conserve
 surtout l’app et ses données sur le téléphone. Si l’export échoue ou que cette
 option manque, garde tout en place et demande de l’aide à GabGaabS avant la mise
 à jour. Ne publie aucun ZIP dans GitHub ou une discussion publique.
 
 ## 2. Installer la bêta et exporter la copie V7
 
-1. Ouvre `Power-7.0.0-beta.1+71-android.apk` et choisis **Mettre à jour**.
+Si ton compte a déjà été migré dans la première bêta V7, conserve ce compte et
+ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifie
+l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
+les utilisateurs qui préparent encore leur migration depuis V6.
+
+1. Ouvre `Power-7.0.0-beta.2+72-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -59,6 +64,9 @@ option manque, garde tout en place et demande de l’aide à GabGaabS avant la m
    compte : conserve l’app et les deux ZIP et signale le problème à GabGaabS.
 
 ## 3. Préparer ton compte, puis tester
+
+Si tu utilises déjà la bêta V7 avec ton compte migré, conserve cette connexion.
+La préparation ci-dessous concerne les comptes qui n’ont pas encore été migrés.
 
 Si ton compte V6 était anonyme, choisis **Créer et relier mon compte** depuis
 ce téléphone. Saisis toi-même ton adresse, ton mot de passe et les informations
@@ -91,3 +99,5 @@ Indique à GabGaabS la version installée, si tes données sont conservées et l
 message d’erreur éventuel. Masque les informations personnelles sur les captures
 et garde les archives en privé. La migration se fait sur chaque téléphone :
 le serveur ne possède pas toutes les séances et séries locales.
+
+Cette mise à jour concerne Android uniquement. La bêta iPhone reste la bêta.1.
