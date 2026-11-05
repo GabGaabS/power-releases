@@ -1,17 +1,19 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.2+72 est disponible** pour les utilisateurs de Power V6 et de la première bêta V7.
+La **7.0.0-beta.3+73 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.2%2B72/Power-7.0.0-beta.2%2B72-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.2%2B72).
-Le fichier s’appelle `Power-7.0.0-beta.2+72-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.3%2B73/Power-7.0.0-beta.3%2B73-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.3%2B73).
+Le fichier s’appelle `Power-7.0.0-beta.3+73-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`3a40a051eef151f34f68d1f20dd2f1edb315258400a9e5fbda7615f1cd61c675`.
+`301c7cc870a5ba2a362704c6d46e0f88023c4c220f3f79527aba97d7640e1233`.
 
 ## 1. Exporter ses données avant la mise à jour
+
+### Si tu es encore sous V6
 
 1. Dans la version de **Power actuellement installée**, ouvre l’onglet **Profil**, puis descends jusqu’à **GESTION**.
 2. Appuie sur **Exporter la base de données**, puis sur **Base complète**
@@ -36,14 +38,23 @@ surtout l’app et ses données sur le téléphone. Si l’export échoue ou que
 option manque, garde tout en place et demande de l’aide à GabGaabS avant la mise
 à jour. Ne publie aucun ZIP dans GitHub ou une discussion publique.
 
+### Si tu utilises déjà une bêta V7
+
+1. Ouvre **Profil → Compte et récupération**, puis appuie sur **Exporter mon historique local** avec le compte déjà lié à cet historique.
+2. Dans l’écran d’enregistrement Android, conserve le nom **Power-historique.sqlite**, choisis un dossier privé et valide l’enregistrement. Annuler cette fenêtre ne crée pas de copie.
+3. Vérifie le fichier dans **Fichiers**, puis copie-le hors du téléphone, par exemple sur ton ordinateur personnel par USB. Conserve aussi tes anciennes copies V6 et V7.
+4. Note ton programme actif et vérifie quelques séances, séries, charges, XP et trophées pour les comparer après la mise à jour.
+
+Cette copie contient la base d’entraînement ; elle ne sauvegarde pas les photos, les fichiers audio, les réglages de l’app, la connexion ou les clés de messagerie. Si tu n’es plus connecté au compte lié, reconnecte-toi à ce même compte avant l’export. Si tu ne peux pas le faire, conserve l’app et ses données et contacte GabGaabS avant la mise à jour.
+
 ## 2. Installer la bêta et exporter la copie V7
 
-Si ton compte a déjà été migré dans la première bêta V7, conserve ce compte et
+Si ton compte a déjà été migré dans une bêta V7, conserve ce compte et
 ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifie
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.2+72-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.3+73-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -77,6 +88,8 @@ En cas de conflit, garde l’app et ses copies : ne crée pas un autre compte po
 contourner l’erreur. Complète toi-même la date et les conditions demandées.
 Ne communique aucun mot de passe, code ou lien de récupération.
 
+En cas de difficulté de connexion, le lien **Besoin d’aide ? Contacter le support** ouvre ton application de messagerie. Ne communique aucun mot de passe, code ou lien de récupération.
+
 Choisis ensuite tes autorisations dans le Profil : classements, demandes
 d’amis/coach, sauvegarde privée en ligne, Analytics et annonces. Analytics reste
 désactivé par défaut. La bannière est fermable ; une vidéo publicitaire choisie
@@ -101,3 +114,4 @@ et garde les archives en privé. La migration se fait sur chaque téléphone :
 le serveur ne possède pas toutes les séances et séries locales.
 
 Cette mise à jour concerne Android uniquement. La bêta iPhone reste la bêta.1.
+
