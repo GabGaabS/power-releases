@@ -1,15 +1,15 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.3+73 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.4+74 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.3%2B73/Power-7.0.0-beta.3%2B73-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.3%2B73).
-Le fichier s’appelle `Power-7.0.0-beta.3+73-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.4%2B74/Power-7.0.0-beta.4%2B74-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.4%2B74).
+Le fichier s’appelle `Power-7.0.0-beta.4+74-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`301c7cc870a5ba2a362704c6d46e0f88023c4c220f3f79527aba97d7640e1233`.
+`445e5bf0314abd4d35777acf34ab2150ec040ca2804efebdef18d733cb820d0e`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -54,7 +54,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.3+73-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.4+74-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -97,6 +97,8 @@ peut donner 24 heures sans bannière. Google peut ne pas diffuser d’annonce.
 Ces choix se règlent dans **Profil → Confidentialité et essais**.
 
 Pour ce test avant la V7 finale :
+
+- Sur le Tableau, vérifie la prochaine séance et les actions **Démarrer aujourd’hui**, **Ouvrir le calendrier** et le lien **Voir le programme**. Une séance déjà commencée propose **Reprendre la séance**.
 
 - Ferme puis rouvre Power sans réseau et vérifie ton historique, puis rétablis
   la connexion. Le suivi sportif local reste utilisable sans serveur.
