@@ -1,15 +1,15 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.4+74 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.5+75 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.4%2B74/Power-7.0.0-beta.4%2B74-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.4%2B74).
-Le fichier s’appelle `Power-7.0.0-beta.4+74-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.5%2B75/Power-7.0.0-beta.5%2B75-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.5%2B75).
+Le fichier s’appelle `Power-7.0.0-beta.5+75-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`445e5bf0314abd4d35777acf34ab2150ec040ca2804efebdef18d733cb820d0e`.
+`d32ef2755acb6354c171a27de1b6fdad3ba1c1ba07642fb74aa3ce8a388b0909`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -54,7 +54,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.4+74-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.5+75-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -94,7 +94,7 @@ Choisis ensuite tes autorisations dans le Profil : classements, demandes
 d’amis/coach, sauvegarde privée en ligne, Analytics et annonces. Analytics reste
 désactivé par défaut. La bannière est fermable ; une vidéo publicitaire choisie
 peut donner 24 heures sans bannière. Google peut ne pas diffuser d’annonce.
-Ces choix se règlent dans **Profil → Confidentialité et essais**.
+Ces choix se règlent dans **Profil → Paramètres de confidentialité**.
 
 Pour ce test avant la V7 finale :
 
@@ -115,5 +115,19 @@ message d’erreur éventuel. Masque les informations personnelles sur les captu
 et garde les archives en privé. La migration se fait sur chaque téléphone :
 le serveur ne possède pas toutes les séances et séries locales.
 
-Cette mise à jour concerne Android uniquement. La bêta iPhone reste la bêta.1.
+## 4. Amis, coaching et confidentialité
 
+Dans **Profil → Mon nom#tag**, affiche ton identifiant court et copie-le. Partage l’identifiant complet avec l’autre testeur, qui doit aussi utiliser cette bêta. Dans **Potes → Découvrir** ou **Coaching → Inviter**, il peut saisir cet identifiant au lieu du long numéro de compte. Les anciens identifiants restent acceptés.
+
+Pour recevoir une demande, ouvre **Profil → Paramètres de confidentialité → Demandes d’amis et coaching**. Active seulement les demandes que tu souhaites recevoir : amis et coaching se règlent séparément. Le classement reste facultatif. Chacun garde le contrôle sur ses programmes et séances partagés ; connaître son identifiant ne donne aucun accès supplémentaire.
+
+En cas de refus, conserve le message affiché et vérifie le compte connecté ainsi que tes choix. Ne recrée pas de compte pour contourner le problème.
+
+## 5. Si tu demandes la suppression du compte
+
+Cette fonction ne sert pas à migrer de V6 à V7. Dans **Profil → Compte et récupération**, la demande de suppression retire le profil public et suspend les accès cloud. L’historique local reste sur le téléphone.
+
+Une nouvelle connexion avec ton mot de passe peut annuler la demande pendant **15 jours** suivant son enregistrement par le service. Si ta session est restée ouverte, utilise **Me reconnecter pour annuler la suppression**. Ouvrir simplement l’app n’annule pas la demande.
+
+La date affichée permet de te repérer ; le temps du service fait foi. Après les 15 jours, l’annulation est fermée et la suppression définitive est traitée ensuite par l’éditeur, sans garantie à la minute près. Tu peux conserver un export privé de ton historique.
+Cette mise à jour concerne Android uniquement. La bêta iPhone reste la bêta.1.
