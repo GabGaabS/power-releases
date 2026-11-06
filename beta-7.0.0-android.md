@@ -1,15 +1,15 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.6+76 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.7+77 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.6%2B76/Power-7.0.0-beta.6%2B76-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.6%2B76).
-Le fichier s’appelle `Power-7.0.0-beta.6+76-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.7%2B77/Power-7.0.0-beta.7%2B77-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.7%2B77).
+Le fichier s’appelle `Power-7.0.0-beta.7+77-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`6f6cb864f0f57d21d66bcb2f4339ffb21f95c2c2c455a825349f965e0397a094`.
+`262ea0aed82e07cd1ba33350205cb098daebffffc180f6f4b1e6dcd9caef97ff`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -54,7 +54,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.6+76-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.7+77-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -76,7 +76,9 @@ les utilisateurs qui préparent encore leur migration depuis V6.
 
 ## 3. Préparer ton compte, puis tester
 
-Cette version utilise la connexion par e-mail. La connexion Google sera proposée dans une mise à jour ultérieure. Les nouveaux comptes ne sont plus créés anonymement en arrière-plan ; les anciennes identités sont conservées pour leur récupération.
+La connexion Google est proposée sur Android ; la connexion par e-mail reste disponible. **Si tu as déjà un compte Power par e-mail, garde ce compte connecté** : ouvre **Profil → Compte et récupération → Lier mon compte Google**, confirme ton mot de passe actuel, puis choisis un compte Google qui t’appartient. Google devient un autre moyen d’accéder au même compte Power, même si les adresses e-mail diffèrent ; ton historique et tes réglages sont conservés. Une annulation ne change pas ton compte. Si le Google choisi est déjà utilisé par un autre compte Power, la liaison est refusée : choisis un autre Google, sans recréer de compte ni contourner le message.
+
+Si tu découvres Power sans compte ni historique existant, tu peux choisir **Continuer avec Google**. Pour retrouver un compte Power déjà lié à Google, utilise ce même Google. Les nouveaux comptes ne sont plus créés anonymement en arrière-plan ; les anciennes identités sont conservées pour leur récupération.
 
 Si tu utilises déjà la bêta V7 avec ton compte migré, conserve cette connexion.
 La préparation ci-dessous concerne les comptes qui n’ont pas encore été migrés.
@@ -129,7 +131,7 @@ En cas de refus, conserve le message affiché et vérifie le compte connecté ai
 
 Cette fonction ne sert pas à migrer de V6 à V7. Dans **Profil → Compte et récupération**, la demande de suppression retire le profil public et suspend les accès cloud. L’historique local reste sur le téléphone.
 
-Une nouvelle connexion avec ton mot de passe peut annuler la demande pendant **15 jours** suivant son enregistrement par le service. Si ta session est restée ouverte, utilise **Me reconnecter pour annuler la suppression**. Ouvrir simplement l’app n’annule pas la demande.
+Une nouvelle connexion explicite avec ton mot de passe, ou avec un compte Google déjà lié à ce même compte Power, peut annuler la demande pendant **15 jours** suivant son enregistrement par le service. Si ta session est restée ouverte, utilise **Me reconnecter pour annuler la suppression**. Ouvrir simplement l’app n’annule pas la demande.
 
 La date affichée permet de te repérer ; le temps du service fait foi. Après les 15 jours, l’annulation est fermée et la suppression définitive est traitée ensuite par l’éditeur, sans garantie à la minute près. Tu peux conserver un export privé de ton historique.
 Cette mise à jour concerne Android uniquement. La bêta iPhone reste la bêta.1.
