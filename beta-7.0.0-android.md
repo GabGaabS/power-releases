@@ -1,15 +1,15 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.5+75 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.6+76 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.5%2B75/Power-7.0.0-beta.5%2B75-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.5%2B75).
-Le fichier s’appelle `Power-7.0.0-beta.5+75-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.6%2B76/Power-7.0.0-beta.6%2B76-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.6%2B76).
+Le fichier s’appelle `Power-7.0.0-beta.6+76-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`d32ef2755acb6354c171a27de1b6fdad3ba1c1ba07642fb74aa3ce8a388b0909`.
+`6f6cb864f0f57d21d66bcb2f4339ffb21f95c2c2c455a825349f965e0397a094`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -54,7 +54,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.5+75-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.6+76-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -75,6 +75,8 @@ les utilisateurs qui préparent encore leur migration depuis V6.
    compte : conserve l’app et les deux ZIP et signale le problème à GabGaabS.
 
 ## 3. Préparer ton compte, puis tester
+
+Cette version utilise la connexion par e-mail. La connexion Google sera proposée dans une mise à jour ultérieure. Les nouveaux comptes ne sont plus créés anonymement en arrière-plan ; les anciennes identités sont conservées pour leur récupération.
 
 Si tu utilises déjà la bêta V7 avec ton compte migré, conserve cette connexion.
 La préparation ci-dessous concerne les comptes qui n’ont pas encore été migrés.
