@@ -1,15 +1,27 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.7+77 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.8+78 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.7%2B77/Power-7.0.0-beta.7%2B77-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.7%2B77).
-Le fichier s’appelle `Power-7.0.0-beta.7+77-android.apk` et conserve la signature
+Le suivi local reste utilisable sans compte. Les fonctions en ligne sont réservées
+aux personnes de **15 ans et plus en France**, avec attestation dans l’app.
+Une ancienne date de naissance valide peut être conservée ; aucun nouveau
+formulaire ne demande de date de naissance.
+
+Le démarrage ne demande pas de compte. Les fonctions en ligne inaccessibles
+sont grisées et expliquent comment créer, connecter ou compléter ton compte ;
+tu peux continuer à utiliser les entraînements locaux.
+
+L’APK se télécharge manuellement depuis GitHub. La mise à jour intégrée a été
+retirée ; elle ne sert plus à récupérer ni à installer les versions suivantes.
+
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.8%2B78/Power-7.0.0-beta.8%2B78-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.8%2B78).
+Le fichier s’appelle `Power-7.0.0-beta.8+78-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`262ea0aed82e07cd1ba33350205cb098daebffffc180f6f4b1e6dcd9caef97ff`.
+`237bd42c0291b50181f3b854f6356778f1e5e2d1c910ca982ef539ff814a6a03`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -54,7 +66,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.7+77-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.8+78-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -78,27 +90,51 @@ les utilisateurs qui préparent encore leur migration depuis V6.
 
 La connexion Google est proposée sur Android ; la connexion par e-mail reste disponible. **Si tu as déjà un compte Power par e-mail, garde ce compte connecté** : ouvre **Profil → Compte et récupération → Lier mon compte Google**, confirme ton mot de passe actuel, puis choisis un compte Google qui t’appartient. Google devient un autre moyen d’accéder au même compte Power, même si les adresses e-mail diffèrent ; ton historique et tes réglages sont conservés. Une annulation ne change pas ton compte. Si le Google choisi est déjà utilisé par un autre compte Power, la liaison est refusée : choisis un autre Google, sans recréer de compte ni contourner le message.
 
-Si tu découvres Power sans compte ni historique existant, tu peux choisir **Continuer avec Google**. Pour retrouver un compte Power déjà lié à Google, utilise ce même Google. Les nouveaux comptes ne sont plus créés anonymement en arrière-plan ; les anciennes identités sont conservées pour leur récupération.
+Si tu découvres Power sans compte ni historique existant, le suivi local reste accessible sans connexion. Pour créer un compte, ouvre **Créer un compte** et choisis la création par e-mail ou **Créer mon compte avec Google**. Pour retrouver un compte Power déjà lié à Google, utilise **Continuer avec Google** avec ce même Google. Les nouveaux comptes ne sont plus créés anonymement en arrière-plan ; les anciennes identités sont conservées pour leur récupération.
 
 Si tu utilises déjà la bêta V7 avec ton compte migré, conserve cette connexion.
 La préparation ci-dessous concerne les comptes qui n’ont pas encore été migrés.
 
-Si ton compte V6 était anonyme, choisis **Créer et relier mon compte** depuis
-ce téléphone. Saisis toi-même ton adresse, ton mot de passe et les informations
-demandées, puis vérifie l’e-mail. Si tu avais déjà le compte e-mail associé à cet
+Si ton compte V6 était anonyme, ouvre **Créer un compte** depuis ce téléphone.
+Saisis toi-même ton adresse, ton mot de passe et les informations demandées,
+puis choisis **Créer et sauvegarder mon historique** ou **Créer sans sauvegarde**.
+Cette création relie le compte encore présent sur ce téléphone. Vérifie ensuite
+l’e-mail. Si tu avais déjà le compte e-mail associé à cet
 historique, choisis **Connexion → Récupérer mon compte historique**.
 **Actualiser un compte déjà lié** sert au compte encore présent sur le téléphone.
 En cas de conflit, garde l’app et ses copies : ne crée pas un autre compte pour
-contourner l’erreur. Complète toi-même la date et les conditions demandées.
+contourner l’erreur. Confirme toi-même l’attestation d’âge demandée. Lis les
+conditions et valide-les si tu les acceptes.
 Ne communique aucun mot de passe, code ou lien de récupération.
 
 En cas de difficulté de connexion, le lien **Besoin d’aide ? Contacter le support** ouvre ton application de messagerie. Ne communique aucun mot de passe, code ou lien de récupération.
 
 Choisis ensuite tes autorisations dans le Profil : classements, demandes
 d’amis/coach, sauvegarde privée en ligne, Analytics et annonces. Analytics reste
-désactivé par défaut. La bannière est fermable ; une vidéo publicitaire choisie
+désactivé avant ton accord. Si tu n’as jamais choisi, une carte du Tableau propose
+**Activer les statistiques** ou **Continuer sans statistiques**, avec le même
+niveau de présentation. Un refus enregistré n’est pas redemandé après une mise
+à jour. Le suivi local reste disponible sans compte, publicité ou Analytics.
+La bannière est fermable ; une vidéo publicitaire choisie
 peut donner 24 heures sans bannière. Google peut ne pas diffuser d’annonce.
 Ces choix se règlent dans **Profil → Paramètres de confidentialité**.
+
+À la création par e-mail, **Créer et sauvegarder mon historique** demande une
+première sauvegarde privée en ligne. **Créer sans sauvegarde** crée le compte sans
+la demander. Pour une création avec Google, un dialogue présente ces deux choix
+avant le sélecteur Google. Ce choix est facultatif ; les connexions à des comptes
+existants et les refus précédents n’activent jamais cette sauvegarde à ta place.
+
+La première copie attend la vérification de l’adresse e-mail, un compte éligible
+et une connexion au service. Si tu reçois un e-mail de vérification, confirme son
+lien puis reviens dans Power pour laisser la préparation reprendre. Une panne peut retarder
+l’envoi ; les entraînements locaux restent utilisables.
+
+Il s’agit d’**une seule copie initiale**, pas d’une synchronisation continue de
+chaque série. Elle peut contenir les programmes, séances, séries, charges, RPE/e1RM,
+poids corporels et révisions, envoyés à Google pour une restauration. Mots de
+passe, jetons, photos, fichiers audio et clés de messagerie sont exclus. Conserve
+tes exports privés V6/V7 : cette copie ne les remplace pas.
 
 Pour ce test avant la V7 finale :
 
@@ -108,6 +144,10 @@ Pour ce test avant la V7 finale :
   la connexion. Le suivi sportif local reste utilisable sans serveur.
 - Teste l’icône d’historique à droite du nom d’un exercice et les fonctions
   sociales avec les autres testeurs, selon vos autorisations.
+- Pour le premier message privé, les deux personnes ouvrent une fois cette
+  version de Power et connectent leur compte éligible. L’app prépare alors les
+  clés sans ouvrir un chat. Le destinataire n’a ensuite pas besoin d’ouvrir la
+  conversation avant que l’autre personne lui envoie un message.
 - Pour une image personnelle, utilise un programme d’essai, choisis une image,
   puis ferme et rouvre l’app. Une ancienne image perdue du cache doit être
   rechoisie ; un ZIP de base de données ne sauvegarde pas toutes les photos.
