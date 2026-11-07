@@ -1,6 +1,6 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.9+79 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.10+80 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
@@ -17,11 +17,11 @@ tu peux continuer à utiliser les entraînements locaux.
 L’APK se télécharge manuellement depuis GitHub. La mise à jour intégrée a été
 retirée ; elle ne sert plus à récupérer ni à installer les versions suivantes.
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.9%2B79/Power-7.0.0-beta.9%2B79-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.9%2B79).
-Le fichier s’appelle `Power-7.0.0-beta.9+79-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.10%2B80/Power-7.0.0-beta.10%2B80-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.10%2B80).
+Le fichier s’appelle `Power-7.0.0-beta.10+80-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`3ffddc04408f7d409f32a57919ffdcfcf34cf04112ccc761e332c8906faf8951`.
+`96f71941ffdb0899454ba68e26c6ef549ae6f4cb5a9bf7c8f7751153bdcb4363`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -66,7 +66,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.9+79-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.10+80-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -179,6 +179,47 @@ copie déjà téléchargée ou acceptée ni modifier les séances.
 Un programme réservé peut être partagé en coaching seulement lorsque les deux
 comptes possèdent déjà l’accès. Le partage communautaire et l’envoi entre amis
 restent fermés pour ces programmes.
+
+### Activer le suivi des séances avec son coach
+
+Les deux personnes doivent installer cette bêta. L’athlète ouvre Power sur le
+téléphone qui contient ses entraînements, avec son compte habituel et une
+connexion au réseau. Il ouvre **Potes → Coaching** (icône en haut), choisit son
+coach, puis **Suivi → Activer mon suivi**. Le dialogue précise les données
+partagées ; il faut confirmer **Activer mon suivi** pour ce coach. Une ancienne
+relation de coaching demande aussi cet accord. Le coach ne peut pas l’activer
+à la place de l’athlète.
+
+Le suivi inclut les **séances terminées** depuis le début du coaching, y compris
+celles du début du bloc qui était en cours à cette date, puis les blocs suivants.
+Les blocs ont leurs propres dates et restent distincts lorsqu’un même programme
+est recommencé. Les limites des anciens blocs peuvent être reconstituées
+approximativement et sont signalées comme telles. La mise à jour conserve les
+séances, séries, charges, XP et trophées ; garde aussi tes anciennes sauvegardes.
+Une sauvegarde d’une ancienne version reste importable. Un export créé après
+cette mise à jour doit être restauré dans cette version ou une version ultérieure.
+
+Pour consulter le suivi, le coach ouvre **Potes → Coaching → son athlète → Suivi**,
+puis un bloc. **Séances** montre les dates et le détail de chaque séance.
+**Évolution** permet de choisir un exercice et de comparer RPE, nombre de séries,
+répétitions et charge. **Valeurs par séance** donne les dates et chiffres exacts.
+Un RPE non renseigné reste absent et une charge externe de 0 kg reste valide.
+Les boutons de chargement donnent accès aux blocs et séances plus anciens ; les
+courbes indiquent quand la liste affichée est encore partielle.
+
+Ouvre une séance datée pour **Commenter la séance**, ou **Commenter la série N**
+pour une consigne ciblée. Le coach peut modifier son commentaire ; les deux
+personnes peuvent le lire. Un commentaire peut être signalé.
+
+Les nouveaux entraînements sont envoyés lorsque l’athlète utilise Power avec une
+connexion. **Actualiser mon suivi** permet de relancer l’envoi ; une panne ne
+bloque jamais l’enregistrement local. Le compte en ligne ne remplace pas
+l’historique conservé sur le téléphone. L’athlète peut **Arrêter le partage** dans
+ce même onglet. L’arrêt bloque les nouveaux envois sur cet appareil ; si le
+serveur ne le confirme pas, l’app l’indique et les copies en ligne peuvent encore
+être visibles. Un arrêt confirmé ferme l’accès au suivi, sans effacer les copies
+que le coach aurait déjà conservées. Les blocs réservés restent soumis aux droits
+des deux comptes et un bloc indisponible est signalé comme suivi partiel.
 
 En cas de refus, conserve le message affiché et vérifie le compte connecté ainsi que tes choix. Ne recrée pas de compte pour contourner le problème.
 
