@@ -1,6 +1,6 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.10+80 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.11+81 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
@@ -17,11 +17,11 @@ tu peux continuer à utiliser les entraînements locaux.
 L’APK se télécharge manuellement depuis GitHub. La mise à jour intégrée a été
 retirée ; elle ne sert plus à récupérer ni à installer les versions suivantes.
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.10%2B80/Power-7.0.0-beta.10%2B80-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.10%2B80).
-Le fichier s’appelle `Power-7.0.0-beta.10+80-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.11%2B81/Power-7.0.0-beta.11%2B81-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.11%2B81).
+Le fichier s’appelle `Power-7.0.0-beta.11+81-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`96f71941ffdb0899454ba68e26c6ef549ae6f4cb5a9bf7c8f7751153bdcb4363`.
+`5ff7f3b1aa67e62ea5376a65c7d9dbed7d20fc7d63d5c01adfa87eb7b24fae05`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -52,12 +52,12 @@ option manque, garde tout en place et demande de l’aide à GabGaabS avant la m
 
 ### Si tu utilises déjà une bêta V7
 
-1. Ouvre **Profil → Compte et récupération**, puis appuie sur **Exporter mon historique local** avec le compte déjà lié à cet historique.
+1. Ouvre **Profil → Données locales · exporter ou importer**, puis appuie sur **Exporter mon historique local**. L’export fonctionne hors ligne et sans compte pour un historique invité. Pour un espace déjà lié, garde le compte propriétaire présent sur ce téléphone.
 2. Dans l’écran d’enregistrement Android, conserve le nom **Power-historique.sqlite**, choisis un dossier privé et valide l’enregistrement. Annuler cette fenêtre ne crée pas de copie.
 3. Vérifie le fichier dans **Fichiers**, puis copie-le hors du téléphone, par exemple sur ton ordinateur personnel par USB. Conserve aussi tes anciennes copies V6 et V7.
 4. Note ton programme actif et vérifie quelques séances, séries, charges, XP et trophées pour les comparer après la mise à jour.
 
-Cette copie contient la base d’entraînement ; elle ne sauvegarde pas les photos, les fichiers audio, les réglages de l’app, la connexion ou les clés de messagerie. Si tu n’es plus connecté au compte lié, reconnecte-toi à ce même compte avant l’export. Si tu ne peux pas le faire, conserve l’app et ses données et contacte GabGaabS avant la mise à jour.
+Cette copie contient la base d’entraînement, y compris ses blocs et séances ; elle ne sauvegarde pas les photos, les fichiers audio, les réglages de l’app, la connexion ou les clés de messagerie. Un export JSON de programme ou CSV/JSON de statistiques ne remplace pas cette copie. Si tu n’es plus connecté au compte lié, reconnecte-toi à ce même compte avant l’export. Si tu ne peux pas le faire, conserve l’app et ses données et contacte GabGaabS avant la mise à jour.
 
 ## 2. Installer la bêta et exporter la copie V7
 
@@ -66,7 +66,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.10+80-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.11+81-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -182,7 +182,17 @@ restent fermés pour ces programmes.
 
 ### Activer le suivi des séances avec son coach
 
-Les deux personnes doivent installer cette bêta. L’athlète ouvre Power sur le
+Les deux personnes doivent installer cette bêta. Quand l’athlète **accepte son
+coach**, depuis Coaching ou la demande ouverte dans la cloche, Power propose
+directement **Activer mon suivi** ou **Plus tard** en expliquant les données
+partagées. Accepter le coaching et partager le suivi restent deux choix distincts.
+Choisir **Plus tard** ou fermer le dialogue avant d’appuyer sur **Activer mon suivi**
+conserve le coaching accepté sans activer le suivi. Après cet appui, fermer la
+fenêtre n’annule pas la demande en cours. Si l’activation échoue, le dialogue permet de réessayer ; le coaching reste
+accepté. Le coach ne peut jamais consentir à la place de l’athlète.
+
+Pour une relation déjà active, ou si le coach a accepté une demande initiée par
+l’athlète, l’activation reste disponible dans la relation. L’athlète ouvre Power sur le
 téléphone qui contient ses entraînements, avec son compte habituel et une
 connexion au réseau. Il ouvre **Potes → Coaching** (icône en haut), choisit son
 coach, puis **Suivi → Activer mon suivi**. Le dialogue précise les données
@@ -223,7 +233,39 @@ des deux comptes et un bloc indisponible est signalé comme suivi partiel.
 
 En cas de refus, conserve le message affiché et vérifie le compte connecté ainsi que tes choix. Ne recrée pas de compte pour contourner le problème.
 
-## 5. Si tu demandes la suppression du compte
+## 5. Restaurer un fichier ou retrouver une copie en ligne
+
+Une mise à jour conserve déjà les données : n’importe pas une copie après chaque
+installation. Si tu dois restaurer un historique, exporte d’abord l’historique
+actuel et conserve ce fichier à part.
+
+Dans **Profil → Données locales · exporter ou importer**, choisis **Importer un
+historique depuis un fichier**, puis lis la confirmation. Les formats acceptés
+sont `.sqlite`, `.db` et les archives `.zip` Power ; les exports JSON de programme
+et CSV/JSON de statistiques ne sont pas des sauvegardes de l’historique. Choisis
+une copie qui t’appartient, lis le bilan, puis **Continuer** pour redémarrer sur la
+copie restaurée. L’ancien espace local et le fichier source restent conservés.
+
+La restauration d’un fichier nécessite un compte Power lié à cet espace. Elle
+fonctionne hors ligne si ce propriétaire et son éligibilité ont déjà été validés
+sur ce téléphone et que sa session est toujours présente. Sans compte lié, l’app
+l’explique et propose de créer un compte ou de se reconnecter ; l’export et
+l’entraînement local restent accessibles. Une suppression en attente empêche
+la restauration avec ce compte.
+
+Un fichier choisi manuellement ne prouve pas ses récompenses : ses événements XP
+ne sont pas réactivés, et il ne transfère ni identité ni droits du compte. Un ZIP
+avant migration peut reprendre ses réglages portables en gardant les partages et
+statistiques désactivés. La restauration de récompenses fiables est réservée à
+une copie privée en ligne authentifiée pour son propriétaire.
+
+Le lien **Mes sauvegardes privées en ligne** ouvre le parcours séparé du compte,
+qui nécessite une connexion. La copie SQLite actuelle est limitée à 16 Mio et une
+archive de migration à 20 Mio. Les photos et sons personnels ne sont pas inclus.
+Les copies de schéma 9 restent récupérables ; un nouvel export de schéma 10 doit
+être restauré avec une version compatible. Ne publie aucun fichier SQLite ou ZIP.
+
+## 6. Si tu demandes la suppression du compte
 
 Cette fonction ne sert pas à migrer de V6 à V7. Dans **Profil → Compte et récupération**, la demande de suppression retire le profil public et suspend les accès cloud. L’historique local reste sur le téléphone.
 
