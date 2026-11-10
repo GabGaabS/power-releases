@@ -14,7 +14,7 @@ Une application d’entraînement en français pour le **powerlifting**, la
 
 </div>
 
-**Bêta Android 7.0.0-beta.12+82** : [télécharger la préversion](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.12%2B82)
+**Bêta Android 7.0.0-beta.13+83** : [télécharger la préversion](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.13%2B83)
 et suivre la [procédure de sauvegarde et de mise à jour](beta-7.0.0-android.md).
 Installe-la par-dessus Power, sans désinstaller l’app ni effacer ses données.
 Cette bêta Android ne remplace pas la dernière version stable.

@@ -1,6 +1,6 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.12+82 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.13+83 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
@@ -17,11 +17,11 @@ tu peux continuer à utiliser les entraînements locaux.
 L’APK se télécharge manuellement depuis GitHub. La mise à jour intégrée a été
 retirée ; elle ne sert plus à récupérer ni à installer les versions suivantes.
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.12%2B82/Power-7.0.0-beta.12%2B82-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.12%2B82).
-Le fichier s’appelle `Power-7.0.0-beta.12+82-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.13%2B83/Power-7.0.0-beta.13%2B83-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.13%2B83).
+Le fichier s’appelle `Power-7.0.0-beta.13+83-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`0a4a126eeffc18f07f7087575c59482bedaa3dda4562130d0422e04e9281711c`.
+`966d84bb2f1b1eea8f71ccf3af1caf3dfb66540dd1c38e137f43f3e5c2d7f0de`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -66,7 +66,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.12+82-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.13+83-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -167,6 +167,26 @@ et garde les archives en privé. La migration se fait sur chaque téléphone :
 le serveur ne possède pas toutes les séances et séries locales.
 
 ## 4. Amis, coaching et confidentialité
+
+### Retrouver les nouveautés
+
+La cloche **Notifications**, dans le Tableau et dans Potes, regroupe les messages
+privés et les nouveautés du coaching : programmes proposés, réponses et demandes
+d’ajustement, séances partagées et commentaires du coach. Un badge dans Potes
+indique les éléments non lus. Appuie sur une alerte pour ouvrir l’échange ou la
+séance correspondante ; **Marquer ces nouveautés comme lues** concerne les
+nouveautés actuellement affichées. Le statut lu est conservé sur ce téléphone.
+
+Chaque coach et athlète doit installer cette mise à jour pour que ses nouveaux
+échanges produisent les alertes. Les anciens échanges ne sont pas tous annoncés
+rétroactivement. Les alertes apparaissent pendant l’utilisation de Power avec du
+réseau ou à la prochaine ouverture connectée. Cette version ne comporte pas de
+notification système lorsque l’app est fermée.
+
+Une séance doit être partagée via le suivi autorisé par l’athlète pour que le
+coach en soit averti. Un entraînement enregistré hors ligne sera transmis lors
+de la reprise du partage en ligne ; sa sauvegarde locale reste indépendante.
+L’alerte n’affiche pas le contenu des messages, programmes ou commentaires.
 
 Dans **Profil → Mon nom#tag**, affiche ton identifiant court et copie-le. Partage l’identifiant complet avec l’autre testeur, qui doit aussi utiliser cette bêta. Dans **Potes → Découvrir** ou **Coaching → Inviter**, il peut saisir cet identifiant au lieu du long numéro de compte. Les anciens identifiants restent acceptés.
 
