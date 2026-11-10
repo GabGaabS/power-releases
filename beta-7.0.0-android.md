@@ -1,6 +1,6 @@
 # Mettre à jour Power vers la bêta V7 sur Android
 
-La **7.0.0-beta.11+81 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
+La **7.0.0-beta.12+82 est disponible** pour les utilisateurs de Power V6 et des bêtas V7 précédentes.
 Elle permet de tester la V7 ensemble avant sa version finale. Elle met à jour
 Power directement et reprend automatiquement les données du téléphone.
 **Ne désinstalle pas Power et n’efface pas ses données.**
@@ -17,11 +17,11 @@ tu peux continuer à utiliser les entraînements locaux.
 L’APK se télécharge manuellement depuis GitHub. La mise à jour intégrée a été
 retirée ; elle ne sert plus à récupérer ni à installer les versions suivantes.
 
-Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.11%2B81/Power-7.0.0-beta.11%2B81-android.apk)
-ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.11%2B81).
-Le fichier s’appelle `Power-7.0.0-beta.11+81-android.apk` et conserve la signature
+Télécharge [l’APK Android de cette bêta](https://github.com/GabGaabS/power-releases/releases/download/v7.0.0-beta.12%2B82/Power-7.0.0-beta.12%2B82-android.apk)
+ou retrouve-le sur [la page de la bêta](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.12%2B82).
+Le fichier s’appelle `Power-7.0.0-beta.12+82-android.apk` et conserve la signature
 habituelle de Power. Son empreinte SHA-256 est :
-`5ff7f3b1aa67e62ea5376a65c7d9dbed7d20fc7d63d5c01adfa87eb7b24fae05`.
+`0a4a126eeffc18f07f7087575c59482bedaa3dda4562130d0422e04e9281711c`.
 
 ## 1. Exporter ses données avant la mise à jour
 
@@ -66,7 +66,7 @@ ne recommence pas sa création ou sa liaison. Après les étapes 1 et 2, vérifi
 l’historique et passe aux essais de la section 3. Les étapes 3 et 4 concernent
 les utilisateurs qui préparent encore leur migration depuis V6.
 
-1. Ouvre `Power-7.0.0-beta.11+81-android.apk` et choisis **Mettre à jour**.
+1. Ouvre `Power-7.0.0-beta.12+82-android.apk` et choisis **Mettre à jour**.
    Si Android demande de désinstaller Power ou signale un conflit, arrête ici
    et contacte GabGaabS. Ne force pas l’installation en supprimant l’app.
 2. Ouvre Power et attends la préparation de la copie locale. **Tu n’as pas à
@@ -136,6 +136,14 @@ passe, jetons, photos, fichiers audio et clés de messagerie sont exclus. Conser
 tes exports privés V6/V7 : cette copie ne les remplace pas.
 
 Pour ce test avant la V7 finale :
+
+- Lance une séance à réaliser : le chrono démarre à son ouverture et continue
+  pendant le repos ou lorsque Power passe en arrière-plan. À la validation, la
+  durée est enregistrée. Dans **Calendrier**, ouvre la journée terminée : la carte
+  présente la durée, les séries et les répétitions ; déplie le récapitulatif pour
+  retrouver les charges et RPE par exercice. Les anciennes séances sans chrono
+  gardent une durée inconnue. Revoir ou corriger une séance terminée ne relance
+  pas son chrono.
 
 - Sur le Tableau, vérifie la prochaine séance et les actions **Démarrer aujourd’hui**, **Ouvrir le calendrier** et le lien **Voir le programme**. Une séance déjà commencée propose **Reprendre la séance**.
 
@@ -262,8 +270,9 @@ une copie privée en ligne authentifiée pour son propriétaire.
 Le lien **Mes sauvegardes privées en ligne** ouvre le parcours séparé du compte,
 qui nécessite une connexion. La copie SQLite actuelle est limitée à 16 Mio et une
 archive de migration à 20 Mio. Les photos et sons personnels ne sont pas inclus.
-Les copies de schéma 9 restent récupérables ; un nouvel export de schéma 10 doit
-être restauré avec une version compatible. Ne publie aucun fichier SQLite ou ZIP.
+Les copies des versions précédentes restent récupérables. Les nouveaux exports
+conservent les durées lorsqu’elles existent : restaure-les avec la bêta.12 ou une
+version ultérieure compatible. Ne publie aucun fichier SQLite ou ZIP.
 
 ## 6. Si tu demandes la suppression du compte
 

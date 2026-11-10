@@ -14,6 +14,11 @@ Une application d’entraînement en français pour le **powerlifting**, la
 
 </div>
 
+**Bêta Android 7.0.0-beta.12+82** : [télécharger la préversion](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.12%2B82)
+et suivre la [procédure de sauvegarde et de mise à jour](beta-7.0.0-android.md).
+Installe-la par-dessus Power, sans désinstaller l’app ni effacer ses données.
+Cette bêta Android ne remplace pas la dernière version stable.
+
 Power rassemble les programmes, le carnet de séance et les rapports dans une
 application pensée pour être utilisée à la salle. Tu peux préparer ton cycle,
 saisir tes séries, suivre tes performances et partager ta séance en story.
@@ -52,19 +57,13 @@ Chaque nouvelle version présente les nouveautés et le fichier à installer.
 
 ### Mettre l’application à jour
 
-Depuis la version **6.5.0**, Power peut vérifier la présence d’une nouvelle
-release. Le réglage de vérification se trouve dans **Profil**. Le téléchargement
-et l’installation passent par Android, avec ton accord.
+Pour la bêta V7, télécharge manuellement le nouvel APK depuis sa page GitHub.
+Exporte d’abord tes données selon la
+[procédure de sauvegarde et de mise à jour](beta-7.0.0-android.md), puis installe
+l’APK **par-dessus Power**, sans désinstaller l’app ni effacer ses données.
 
-À partir de **6.5.2**, une fenêtre te prévient dans l'app lorsqu'une nouvelle
-version est disponible. Elle présente seulement ses nouveautés, en petit,
-avec les choix **Voir la mise à jour** et **Plus tard**. Si une séance est
-ouverte, elle attend ton retour à l'écran principal.
-
-Tu peux aussi ouvrir cette page et télécharger le nouvel APK. Installe-le
-**par-dessus la version existante**, sans désinstaller Power : c’est ce qui
-permet de conserver les données locales. Une sauvegarde avant une mise à jour
-reste une bonne habitude.
+La recherche de mises à jour dans l’app a été retirée de la V7. Les anciennes
+versions V6 peuvent encore afficher leur écran de mise à jour.
 
 Si Android refuse la mise à jour, conserve l’application installée et signale
 le message affiché. Une désinstallation supprimerait les données locales.
