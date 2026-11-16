@@ -14,10 +14,17 @@ Une application d’entraînement en français pour le **powerlifting**, la
 
 </div>
 
-**Bêta Android 7.0.0-beta.13+83** : [télécharger la préversion](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.13%2B83)
+**Bêta Android 7.0.0-beta.14+84** : [télécharger la préversion](https://github.com/GabGaabS/power-releases/releases/tag/v7.0.0-beta.14%2B84)
 et suivre la [procédure de sauvegarde et de mise à jour](beta-7.0.0-android.md).
 Installe-la par-dessus Power, sans désinstaller l’app ni effacer ses données.
-Cette bêta Android ne remplace pas la dernière version stable.
+Cette bêta Android ne remplace pas la dernière version stable. Elle apporte les
+bulles de conversation, le retour de l’aperçu sans chrono, une validation de séance
+par glissement et l’accès direct au suivi coaching.
+Les commentaires du coach gagnent en lisibilité et permettent de répondre dans
+le chat en conservant le contexte de la séance et du commentaire.
+La connexion Samsung Health /
+Health Connect est facultative et désactivée au départ ; son trajet réel jusqu’à
+Samsung Health reste à essayer sur téléphone.
 
 Power rassemble les programmes, le carnet de séance et les rapports dans une
 application pensée pour être utilisée à la salle. Tu peux préparer ton cycle,
@@ -151,9 +158,13 @@ historique à une IA. Relis le résultat et adapte-le avant de l’utiliser.
 
 ## Pendant la séance
 
-Depuis le tableau de bord, **Voir la séance** sous **Commencer** permet de
-consulter les exercices et les séries du prochain entraînement. Cet aperçu
-laisse tes saisies intactes ; reviens au tableau lorsque tu veux commencer.
+Depuis le tableau de bord V7, **Voir la séance** permet de consulter les
+exercices et les séries du prochain entraînement sans démarrer le chrono ni
+modifier tes saisies. **Démarrer aujourd’hui** lance l’entraînement.
+
+Pour terminer une séance, glisse le curseur depuis le départ jusqu’à au moins
+70 %, puis relâche. Un appui au bout de la barre ne valide pas la séance.
+Une confirmation distincte est prévue au clavier et avec un lecteur d’écran.
 
 Retrouve tes exercices et tes séries, puis renseigne la charge, les répétitions
 et le RPE si tu le souhaites. Le système métrique ou impérial s’applique à
@@ -201,10 +212,14 @@ Les commentaires et réactions hebdomadaires sont accessibles entre potes
 acceptés, ainsi que sur ton propre profil. Les blocages et les réglages de
 visibilité restent applicables.
 
-Un compteur sur **Potes** indique les nouveaux commentaires reçus sur ton récap.
-La **cloche** ouvre ton fil de commentaires. Les messages lus restent marqués
-comme tels à la prochaine ouverture de Power. Ces notifications sont visibles
-dans l'app, lorsqu'elle est ouverte ou à ton retour.
+Dans la bêta V7, la **cloche Notifications** du Tableau et de Potes regroupe les
+messages privés et les nouveautés du coaching. Le statut lu est conservé sur le
+téléphone. Les alertes apparaissent pendant l’utilisation ou à la prochaine
+ouverture connectée ; cette version n’ajoute pas de push lorsque l’app est fermée.
+
+Les conversations affichent le nom#tag du contact ou son pseudo, ses messages
+à gauche et les tiens à droite. Dans une relation de coaching, **Suivi** s’ouvre
+en premier ; l’athlète garde le choix des données partagées.
 
 Les fonctions sociales nécessitent une connexion. Un problème réseau ou un
 refus de commentaire ne supprime pas tes séances locales.
@@ -221,9 +236,22 @@ Avant un changement de téléphone, une réinstallation ou une désinstallation,
 exporte tes données depuis Profil et conserve la sauvegarde dans un autre
 emplacement. Une désinstallation peut supprimer les données stockées par l’app.
 
-Le profil permet de sauvegarder l’ensemble de tes données, uniquement tes
-programmes ou tes musiques de performance. Pour partager un plan, l’export
-depuis Programmes permet de transmettre le programme sans ton historique.
+Pour la V6, ouvre **Profil → GESTION → Exporter la base de données → Base complète**
+et conserve le ZIP hors du téléphone. Dans la V7, ouvre **Profil → Données locales ·
+exporter ou importer → Exporter mon historique local** et conserve
+**Power-historique.sqlite**. La [procédure détaillée](beta-7.0.0-android.md)
+explique les deux parcours et les précautions de restauration. Les photos,
+fichiers audio, connexions et clés de messagerie ne font pas partie de cette
+copie SQLite. Pour partager un plan seul, utilise l’export depuis Programmes.
+
+## Samsung Health / Health Connect — bêta Android
+
+Dans **Profil → Samsung Health / Health Connect**, choisis séparément l’export des
+nouvelles séances terminées et l’import du poids. Ces fonctions sont désactivées
+au départ et demandent ton accord puis les autorisations Android correspondantes.
+L’import des 30 derniers jours démarre uniquement avec **Importer les poids**.
+Les échanges restent facultatifs, même sans compte Power. Les détails et limites
+de l’essai sont dans le [guide bêta Android](beta-7.0.0-android.md).
 
 ## Personnaliser l’application
 
