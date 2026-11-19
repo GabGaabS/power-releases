@@ -1,10 +1,10 @@
 # Generic orchestration only. Apple keys are encrypted Actions secrets, never Git files.
-name: Prepare Power TestFlight
+name: Prepare Power V7 TestFlight
 on:
   workflow_dispatch:
     inputs:
       source_sha:
-        description: Reviewed private Power commit (40 hexadecimal characters)
+        description: Reviewed current V7 private Power commit (40 hexadecimal characters)
         required: true
         type: string
       upload_to_testflight:
@@ -39,15 +39,15 @@ jobs:
           [[ -n "$SOURCE_KEY" ]]
           umask 077
           (
+            trap 'rm -f "$RUNNER_TEMP/power-source-key"' EXIT
             printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$RUNNER_TEMP/power-hosts"
             printf '%s\n' "$SOURCE_KEY" | tr -d '\r' > "$RUNNER_TEMP/power-source-key"
             unset SOURCE_KEY
-            trap 'rm -f "$RUNNER_TEMP/power-source-key"' EXIT
             export GIT_SSH_COMMAND="ssh -i $RUNNER_TEMP/power-source-key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/power-hosts"
             git init "$RUNNER_TEMP/power-source"
             git -C "$RUNNER_TEMP/power-source" remote add origin git@github.com:GabGaabS/power.git
             git -C "$RUNNER_TEMP/power-source" config core.sparseCheckout true
-            printf '%s\n' '/lib/' '/assets/' '/ios/' '/tool/build-ios-testflight.mjs' '/tool/ci-public/power-ios-delivery.mjs' '/pubspec.yaml' '/pubspec.lock' '/.gitattributes' > "$RUNNER_TEMP/power-source/.git/info/sparse-checkout"
+            printf '%s\n' '/lib/' '/assets/' '/ios/' '/tool/build-ios-testflight.mjs' '/tool/build-ios-unsigned.sh' '/tool/ci-public/power-ios-delivery.mjs' '/tool/prepare_native_sqlite.dart' '/tool/prepare-ios-native-crypto.sh' '/tool/verify_ios_ipa.py' '/pubspec.yaml' '/pubspec.lock' '/.gitattributes' > "$RUNNER_TEMP/power-source/.git/info/sparse-checkout"
             git -C "$RUNNER_TEMP/power-source" fetch --depth=1 --filter=blob:none origin "$SOURCE_SHA"
             git -C "$RUNNER_TEMP/power-source" checkout --detach FETCH_HEAD
             [[ "$(git -C "$RUNNER_TEMP/power-source" rev-parse HEAD)" == "$SOURCE_SHA" ]]
@@ -56,8 +56,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          [[ ! -e "$RUNNER_TEMP/power-source-key" ]]
           (
-            git clone --depth=1 --branch 3.41.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
+            git clone --depth=1 --branch 3.47.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
             test -d /Applications/Xcode_26.2.app/Contents/Developer
             echo 'DEVELOPER_DIR=/Applications/Xcode_26.2.app/Contents/Developer' >> "$GITHUB_ENV"
           ) >> "$RUNNER_TEMP/power-private-build.log" 2>&1
@@ -71,6 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          [[ ! -e "$RUNNER_TEMP/power-source-key" ]]
           export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
           node "$RUNNER_TEMP/power-source/tool/build-ios-testflight.mjs"
       - name: Retain only an encrypted private diagnostic
