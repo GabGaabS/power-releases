@@ -21,7 +21,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: power-iphone-build
+  group: ${{ inputs.screenshots_only && inputs.capture_device == 'iPad' && 'power-ipad-screenshots' || 'power-iphone-build' }}
   cancel-in-progress: false
 jobs:
   iphone:
