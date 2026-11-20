@@ -7,6 +7,17 @@ on:
         description: Reviewed private Power commit (40 hexadecimal characters)
         required: true
         type: string
+      screenshots_only:
+        description: Capture App Store simulator screenshots only
+        required: false
+        default: false
+        type: boolean
+      capture_device:
+        description: App Store screenshot display
+        required: false
+        type: choice
+        default: iPhone
+        options: [iPhone, iPad]
 permissions:
   contents: read
 concurrency:
@@ -49,6 +60,7 @@ jobs:
           ) > "$RUNNER_TEMP/power-private-build.log" 2>&1
       - name: Build unsigned iPhone application privately
         id: build
+        if: ${{ !inputs.screenshots_only }}
         timeout-minutes: 50
         shell: bash
         run: |
@@ -64,7 +76,7 @@ jobs:
           ) >> "$RUNNER_TEMP/power-private-build.log" 2>&1
           echo 'Unsigned iPhone application compiled.'
       - name: Retain IPA before simulator work
-        if: always() && !cancelled()
+        if: always() && !cancelled() && !inputs.screenshots_only
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ inputs.source_sha }}
@@ -82,6 +94,65 @@ jobs:
           export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
           bash "$RUNNER_TEMP/power-source/tool/capture-ios-screenshots.sh" >> "$RUNNER_TEMP/power-private-build.log" 2>&1 || { echo 'Simulator capture failed; diagnostic will be encrypted.'; exit 1; }
           touch "$RUNNER_TEMP/power-screenshots-built"
+      - name: Capture App Store screenshots on the pinned simulator toolchain
+        if: inputs.screenshots_only
+        timeout-minutes: 75
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+          CAPTURE_DISPLAY: ${{ inputs.capture_device }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ ! -e "$RUNNER_TEMP/power-source-key" ]]
+          (
+            cd "$RUNNER_TEMP/power-source"
+            test -d "$DEVELOPER_DIR"
+            git clone --depth=1 --branch 3.47.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
+            export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
+            flutter --version --machine | ruby -rjson -e 'v=JSON.parse(STDIN.read); abort "Unmatched Flutter / Dart" unless v["frameworkVersion"]=="3.47.9" && v["dartSdkVersion"].split.first=="3.13.7"'
+            flutter pub get --enforce-lockfile
+            dart --packages=.dart_tool/package_config.json tool/prepare_native_sqlite.dart
+            bash tool/prepare-ios-native-crypto.sh
+            if ! xcrun simctl list runtimes available | grep -Eq 'iOS [0-9]'; then
+              xcodebuild -downloadPlatform iOS
+            fi
+            xcrun simctl list devices available --json > "$RUNNER_TEMP/capture-devices.json"
+            export POWER_CAPTURE_DEVICE="$(ruby -rjson -e '
+              devices=JSON.parse(File.read(ARGV.fetch(0))).fetch("devices").select { |k,_| k.include?("iOS-") }.values.flatten
+              models = if ENV.fetch("CAPTURE_DISPLAY") == "iPad"
+                devices.map { |d| d.fetch("name") }.grep(/iPad Pro.*(13-inch|12.9-inch)/).uniq
+              else
+                ["iPhone 17 Pro","iPhone 17","iPhone 16 Pro","iPhone 16","iPhone 15 Pro","iPhone 15"]
+              end
+              models.each do |name|
+                found=devices.find { |d| d["isAvailable"] && d["name"]==name }
+                if found then puts found.fetch("udid"); exit 0 end
+              end
+              abort "No matching App Store simulator"
+            ' "$RUNNER_TEMP/capture-devices.json")"
+            [[ "$POWER_CAPTURE_DEVICE" =~ ^[0-9A-Fa-f-]{36}$ ]]
+            # Select a supported display in the isolated capture driver.
+            ruby -e '
+              src=File.read(ARGV[0])
+              matcher=/^device=.*$/
+              abort "Unexpected capture driver" unless src.scan(matcher).size==1
+              File.write(ARGV[1],src.sub(matcher,%q{device="${POWER_CAPTURE_DEVICE:?}"}))
+            ' tool/capture-ios-screenshots.sh tool/capture-store-screenshots.sh
+            bash tool/capture-store-screenshots.sh
+            python3 - <<'PY'
+          import glob, os, struct
+          paths = glob.glob('build/ios/screenshots/iphone-*.png')
+          assert len(paths) == 9, 'Incomplete screenshot set'
+          expected = {(2048, 2732), (2064, 2752)} if os.environ['CAPTURE_DISPLAY'] == 'iPad' else {(1179, 2556), (1206, 2622)}
+          for path in paths:
+              with open(path, 'rb') as image:
+                  header = image.read(24)
+              assert header[:8] == b'\x89PNG\r\n\x1a\n'
+              assert struct.unpack('>II', header[16:24]) in expected, 'Unexpected screen dimensions'
+          PY
+            touch "$RUNNER_TEMP/power-screenshots-built"
+          ) >> "$RUNNER_TEMP/power-private-build.log" 2>&1
+          echo 'Captured and checked the App Store screenshots.'
       - name: Save unpublished build draft and encrypted diagnostic
         if: always() && !cancelled()
         env:
