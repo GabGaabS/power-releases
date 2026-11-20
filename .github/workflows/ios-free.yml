@@ -34,6 +34,56 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+      - name: Check and boot an installed App Store display
+        if: inputs.screenshots_only
+        timeout-minutes: 8
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+          CAPTURE_DISPLAY: ${{ inputs.capture_device }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "$DEVELOPER_DIR"
+          echo 'Checking installed simulator runtimes and displays.'
+          python3 - <<'PY'
+          import json, os, pathlib, re, struct, subprocess
+          def sim(args, timeout, **kwargs):
+              return subprocess.run(["xcrun", "simctl", *args], timeout=timeout, check=True, **kwargs)
+          inventory = None
+          for attempt in range(2):
+              try:
+                  inventory = json.loads(sim(["list", "devices", "available", "--json"], 75, capture_output=True).stdout)
+                  break
+              except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+                  print("Simulator service did not respond to inventory request.", flush=True)
+          if not inventory:
+              raise SystemExit("Installed simulator inventory unavailable.")
+          available = [(r, d) for r, group in inventory["devices"].items() if "iOS-" in r for d in group if d.get("isAvailable")]
+          names = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16", "iPhone 15 Pro", "iPhone 15"]
+          tablet = os.environ["CAPTURE_DISPLAY"] == "iPad"
+          if tablet:
+              names = sorted({d["name"] for _, d in available if re.search(r"iPad Pro.*(?:13-inch|12\.9-inch)", d["name"])})
+          choices = [(name, r, d) for name in names for r, d in available if d["name"] == name]
+          if not choices:
+              raise SystemExit("No installed compatible App Store simulator.")
+          name, runtime, selected = choices[0]
+          device = selected["udid"]
+          assert re.fullmatch(r"[a-fA-F0-9-]{36}", device)
+          print(f"Selected {name} with installed runtime {runtime}.", flush=True)
+          if selected["state"] != "Booted":
+              sim(["boot", device], 50, stdout=subprocess.DEVNULL)
+          sim(["bootstatus", device, "-b"], 180, stdout=subprocess.DEVNULL)
+          path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "simulator-display-check.png"
+          sim(["io", device, "screenshot", str(path)], 25, capture_output=True)
+          with path.open("rb") as src:
+              size = struct.unpack(">II", src.read(24)[16:24])
+          path.unlink()
+          expected = {(2048, 2732), (2064, 2752)} if tablet else {(1179, 2556), (1206, 2622)}
+          assert size in expected, f"Unsupported simulator dimensions {size}."
+          print(f"Simulator booted at {size[0]}x{size[1]}.", flush=True)
+          with open(os.environ["GITHUB_ENV"], "a") as env:
+              env.write(f"POWER_CAPTURE_DEVICE={device}\n")
+          PY
       - name: Fetch reviewed sources with read-only access
         env:
           SOURCE_SHA: ${{ inputs.source_sha }}
@@ -94,9 +144,9 @@ jobs:
           export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
           bash "$RUNNER_TEMP/power-source/tool/capture-ios-screenshots.sh" >> "$RUNNER_TEMP/power-private-build.log" 2>&1 || { echo 'Simulator capture failed; diagnostic will be encrypted.'; exit 1; }
           touch "$RUNNER_TEMP/power-screenshots-built"
-      - name: Capture App Store screenshots on the pinned simulator toolchain
+      - name: Compile the isolated App Store gallery
         if: inputs.screenshots_only
-        timeout-minutes: 75
+        timeout-minutes: 56
         env:
           DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
           CAPTURE_DISPLAY: ${{ inputs.capture_device }}
@@ -115,24 +165,7 @@ jobs:
             flutter pub get --enforce-lockfile
             dart --packages=.dart_tool/package_config.json tool/prepare_native_sqlite.dart
             bash tool/prepare-ios-native-crypto.sh
-            if ! xcrun simctl list runtimes available | grep -Eq 'iOS [0-9]'; then
-              xcodebuild -downloadPlatform iOS
-            fi
-            xcrun simctl list devices available --json > "$RUNNER_TEMP/capture-devices.json"
-            export POWER_CAPTURE_DEVICE="$(ruby -rjson -e '
-              devices=JSON.parse(File.read(ARGV.fetch(0))).fetch("devices").select { |k,_| k.include?("iOS-") }.values.flatten
-              models = if ENV.fetch("CAPTURE_DISPLAY") == "iPad"
-                devices.map { |d| d.fetch("name") }.grep(/iPad Pro.*(13-inch|12.9-inch)/).uniq
-              else
-                ["iPhone 17 Pro","iPhone 17","iPhone 16 Pro","iPhone 16","iPhone 15 Pro","iPhone 15"]
-              end
-              models.each do |name|
-                found=devices.find { |d| d["isAvailable"] && d["name"]==name }
-                if found then puts found.fetch("udid"); exit 0 end
-              end
-              abort "No matching App Store simulator"
-            ' "$RUNNER_TEMP/capture-devices.json")"
-            [[ "$POWER_CAPTURE_DEVICE" =~ ^[0-9A-Fa-f-]{36}$ ]]
+            echo "Dependencies ready. Compiling the simulator gallery." >&3
             cat > tool/store_capture_entry.dart <<'DART'
           import 'dart:async';
           import 'dart:io';
@@ -150,7 +183,8 @@ jobs:
                 ', capture=' + (Platform.environment['POWER_SCREENSHOTS'] ?? 'absent'));
             await runZonedGuarded(() async {
               final binding = WidgetsFlutterBinding.ensureInitialized();
-              record('Documents from platform: ' + (await getApplicationDocumentsDirectory()).path);
+              getApplicationDocumentsDirectory().then((d) => record('Documents from platform: ' + d.path),
+                  onError: (Object e) => record('Documents lookup failed: ' + e.toString()));
               Timer.periodic(const Duration(seconds: 15), (_) {
                 record('Lifecycle=' + binding.lifecycleState.toString() +
                     ' root=' + (binding.rootElement != null).toString() +
@@ -173,7 +207,7 @@ jobs:
               src, count = re.subn(old, lambda _: replacement, src, flags=re.M)
               assert count == 1, "Unexpected simulator driver"
           substitute(r'^device=.*$', 'device="${POWER_CAPTURE_DEVICE:?}"')
-          substitute(r'--target tool/ios_screenshots_demo\.dart', '--target tool/store_capture_entry.dart')
+          substitute(r'^flutter build ios .*$(?=\n)', 'test -d build/ios/iphonesimulator/Runner.app')
           substitute(r'^SIMCTL_CHILD_POWER_SCREENSHOTS=.* &$',
               'echo "Simulator application compiled; starting Flutter and waiting for the demo." >&3\n'
               'SIMCTL_CHILD_POWER_SCREENSHOTS=1 flutter run --debug --no-pub --resident '
@@ -184,10 +218,29 @@ jobs:
             container=$(xcrun simctl get_app_container "$device" com.gab.power.power data 2>/dev/null || true)
             [[ -n "$container" && -f "$container/Documents/power-gallery-runtime.log" ]] && break
             sleep 1
-          done''')
+          done
+          [[ -n "$container" && -f "$container/Documents/power-gallery-runtime.log" ]] || { echo 'The app did not report its startup.'; exit 1; }
+          echo 'Flutter opened the demo on the simulator.' >&3''')
           substitute(r'for \(\(attempt=0; attempt<90; attempt\+\+\)\)', 'for ((attempt=0; attempt<120; attempt++))')
           Path('tool/capture-store-screenshots.sh').write_text(src)
           PY
+            flutter build ios --simulator --debug --no-pub --target tool/store_capture_entry.dart --dart-define=POWER_DEMO=true
+            test -d build/ios/iphonesimulator/Runner.app
+          ) >> "$RUNNER_TEMP/power-private-build.log" 2>&1
+          echo 'Simulator gallery compiled.'
+      - name: Open the gallery and capture verified App Store screens
+        if: inputs.screenshots_only
+        timeout-minutes: 12
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+          CAPTURE_DISPLAY: ${{ inputs.capture_device }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec 3>&1
+          (
+            cd "$RUNNER_TEMP/power-source"
+            export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
             if ! bash tool/capture-store-screenshots.sh; then
               echo 'Collecting isolated simulator startup and rendering diagnostics.'
               container=$(xcrun simctl get_app_container "$POWER_CAPTURE_DEVICE" com.gab.power.power data 2>/dev/null || true)
