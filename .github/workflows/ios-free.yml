@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false
       - name: Check and boot an installed App Store display
         if: inputs.screenshots_only
-        timeout-minutes: 14
+        timeout-minutes: 18
         env:
           DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
           CAPTURE_DISPLAY: ${{ inputs.capture_device }}
@@ -114,8 +114,33 @@ jobs:
                   raise SystemExit("The selected runtime did not boot within eight minutes.")
               if proc.returncode:
                   raise SystemExit("The selected simulator reported an unsuccessful boot.")
+          simulator_app = pathlib.Path(os.environ["DEVELOPER_DIR"]) / "Applications/Simulator.app"
+          subprocess.run(["open", "-g", "-a", str(simulator_app), "--args", "-CurrentDeviceUDID", device], timeout=30, check=False)
+          print("Simulator booted. Waiting for its display service to produce a complete first frame.", flush=True)
+          try:
+              sim(["launch", device, "com.apple.Preferences"], 45, capture_output=True)
+          except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+              print("System screen launch was not confirmed; checking the native display directly.", flush=True)
           image = path / "simulator-display-check.png"
-          sim(["io", device, "screenshot", str(image)], 25, capture_output=True)
+          for attempt in range(2):
+              if image.exists():
+                  image.unlink()
+              try:
+                  sim(["io", device, "screenshot", str(image)], 120, capture_output=True)
+              except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+                  print(f"Framebuffer read {attempt+1} did not return normally.", flush=True)
+              if image.exists() and image.stat().st_size >= 36:
+                  with image.open("rb") as frame:
+                      first = frame.read(24)
+                      frame.seek(-8, 2)
+                      if first[:8] == b'\x89PNG\r\n\x1a\n' and frame.read(4) == b'IEND':
+                          break
+          else:
+              raise SystemExit("CoreSimulator returned no complete first frame after two bounded display reads.")
+          try:
+              sim(["terminate", device, "com.apple.Preferences"], 20, capture_output=True)
+          except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+              pass
           with image.open("rb") as src:
               size = struct.unpack(">II", src.read(24)[16:24])
           image.unlink()
