@@ -109,6 +109,7 @@ jobs:
             test -d "$DEVELOPER_DIR"
             git clone --depth=1 --branch 3.47.9 https://github.com/flutter/flutter.git "$RUNNER_TEMP/power-flutter"
             export PATH="$RUNNER_TEMP/power-flutter/bin:$PATH"
+            flutter --version
             flutter --version --machine | ruby -rjson -e 'v=JSON.parse(STDIN.read); abort "Unmatched Flutter / Dart" unless v["frameworkVersion"]=="3.47.9" && v["dartSdkVersion"].split.first=="3.13.7"'
             flutter pub get --enforce-lockfile
             dart --packages=.dart_tool/package_config.json tool/prepare_native_sqlite.dart
