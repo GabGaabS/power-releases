@@ -36,7 +36,7 @@ jobs:
           persist-credentials: false
       - name: Check and boot an installed App Store display
         if: inputs.screenshots_only
-        timeout-minutes: 8
+        timeout-minutes: 14
         env:
           DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
           CAPTURE_DISPLAY: ${{ inputs.capture_device }}
@@ -46,38 +46,79 @@ jobs:
           test -d "$DEVELOPER_DIR"
           echo 'Checking installed simulator runtimes and displays.'
           python3 - <<'PY'
-          import json, os, pathlib, re, struct, subprocess
+          import json, os, pathlib, re, struct, subprocess, time
           def sim(args, timeout, **kwargs):
               return subprocess.run(["xcrun", "simctl", *args], timeout=timeout, check=True, **kwargs)
           inventory = None
           for attempt in range(2):
               try:
-                  inventory = json.loads(sim(["list", "devices", "available", "--json"], 75, capture_output=True).stdout)
+                  inventory = json.loads(sim(["list", "--json"], 70, capture_output=True).stdout)
                   break
               except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
-                  print("Simulator service did not respond to inventory request.", flush=True)
+                  print("Simulator inventory request timed out or failed.", flush=True)
           if not inventory:
               raise SystemExit("Installed simulator inventory unavailable.")
-          available = [(r, d) for r, group in inventory["devices"].items() if "iOS-" in r for d in group if d.get("isAvailable")]
-          names = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16", "iPhone 15 Pro", "iPhone 15"]
+          runtimes = [r for r in inventory["runtimes"] if r.get("isAvailable") and ".iOS-" in r["identifier"]]
+          def priority(runtime):
+              version = tuple(map(int, runtime["version"].split(".")))
+              return (0 if version[0] == 18 else 1 if version[:2] == (26, 2) else 2,
+                      tuple(-n for n in version))
+          runtimes.sort(key=priority)
+          print("Installed iOS runtimes: " + ", ".join(r["version"] for r in runtimes), flush=True)
           tablet = os.environ["CAPTURE_DISPLAY"] == "iPad"
-          if tablet:
-              names = sorted({d["name"] for _, d in available if re.search(r"iPad Pro.*(?:13-inch|12\.9-inch)", d["name"])})
-          choices = [(name, r, d) for name in names for r, d in available if d["name"] == name]
-          if not choices:
-              raise SystemExit("No installed compatible App Store simulator.")
-          name, runtime, selected = choices[0]
-          device = selected["udid"]
+          phones = ["iPhone 16 Pro", "iPhone 16", "iPhone 15 Pro", "iPhone 15"]
+          models = [t for t in inventory["devicetypes"] if (re.search(r"iPad Pro.*(?:13-inch|12\.9-inch)", t["name"]) if tablet else t["name"] in phones)]
+          if not tablet:
+              models.sort(key=lambda t: phones.index(t["name"]))
+          chosen = None
+          for runtime in runtimes:
+              available = [d for d in inventory["devices"].get(runtime["identifier"], []) if d.get("isAvailable")]
+              compatible = {t["identifier"] for t in runtime.get("supportedDeviceTypes", [])}
+              for model in models:
+                  if compatible and model["identifier"] not in compatible:
+                      continue
+                  current = next((d for d in available if d.get("deviceTypeIdentifier") == model["identifier"]), None)
+                  if current:
+                      chosen = (model["name"], runtime["version"], current["udid"], current["state"])
+                      break
+                  try:
+                      udid = sim(["create", "Power App Store display", model["identifier"], runtime["identifier"]], 30, capture_output=True, text=True).stdout.strip()
+                  except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+                      continue
+                  chosen = (model["name"], runtime["version"], udid, "Shutdown")
+                  break
+              if chosen:
+                  break
+          if not chosen:
+              raise SystemExit("No compatible installed simulator distinct from the failed iPhone 17 Pro.")
+          name, version, device, state = chosen
           assert re.fullmatch(r"[a-fA-F0-9-]{36}", device)
-          print(f"Selected {name} with installed runtime {runtime}.", flush=True)
-          if selected["state"] != "Booted":
-              sim(["boot", device], 50, stdout=subprocess.DEVNULL)
-          sim(["bootstatus", device, "-b"], 180, stdout=subprocess.DEVNULL)
-          path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "simulator-display-check.png"
-          sim(["io", device, "screenshot", str(path)], 25, capture_output=True)
-          with path.open("rb") as src:
+          print(f"Selected {name} with preinstalled iOS {version}.", flush=True)
+          if state != "Booted":
+              sim(["boot", device], 55, stdout=subprocess.DEVNULL)
+          path = pathlib.Path(os.environ["RUNNER_TEMP"])
+          boot_path = path / "power-simulator-boot.log"
+          with boot_path.open("w") as boot:
+              proc = subprocess.Popen(["xcrun","simctl","bootstatus",device,"-b"], stdout=boot, stderr=subprocess.STDOUT)
+              for attempt in range(16):
+                  try:
+                      proc.wait(timeout=30)
+                      break
+                  except subprocess.TimeoutExpired:
+                      lines = boot_path.read_text(errors="replace")
+                      stages = re.findall(r"Waiting on (?:Data Migration|System App|BackBoard|Booted)", lines)
+                      print(f"Boot progress after {30*(attempt+1)} seconds: {stages[-1] if stages else 'waiting for readiness'}.", flush=True)
+              if proc.poll() is None:
+                  proc.kill()
+                  proc.wait()
+                  raise SystemExit("The selected runtime did not boot within eight minutes.")
+              if proc.returncode:
+                  raise SystemExit("The selected simulator reported an unsuccessful boot.")
+          image = path / "simulator-display-check.png"
+          sim(["io", device, "screenshot", str(image)], 25, capture_output=True)
+          with image.open("rb") as src:
               size = struct.unpack(">II", src.read(24)[16:24])
-          path.unlink()
+          image.unlink()
           expected = {(2048, 2732), (2064, 2752)} if tablet else {(1179, 2556), (1206, 2622)}
           assert size in expected, f"Unsupported simulator dimensions {size}."
           print(f"Simulator booted at {size[0]}x{size[1]}.", flush=True)
