@@ -104,6 +104,7 @@ jobs:
         run: |
           set -euo pipefail
           [[ ! -e "$RUNNER_TEMP/power-source-key" ]]
+          exec 3>&1
           (
             cd "$RUNNER_TEMP/power-source"
             test -d "$DEVELOPER_DIR"
@@ -132,14 +133,84 @@ jobs:
               abort "No matching App Store simulator"
             ' "$RUNNER_TEMP/capture-devices.json")"
             [[ "$POWER_CAPTURE_DEVICE" =~ ^[0-9A-Fa-f-]{36}$ ]]
-            # Select a supported display in the isolated capture driver.
-            ruby -e '
-              src=File.read(ARGV[0])
-              matcher=/^device=.*$/
-              abort "Unexpected capture driver" unless src.scan(matcher).size==1
-              File.write(ARGV[1],src.sub(matcher,%q{device="${POWER_CAPTURE_DEVICE:?}"}))
-            ' tool/capture-ios-screenshots.sh tool/capture-store-screenshots.sh
-            bash tool/capture-store-screenshots.sh
+            cat > tool/store_capture_entry.dart <<'DART'
+          import 'dart:async';
+          import 'dart:io';
+          import 'package:flutter/widgets.dart';
+          import 'package:path_provider/path_provider.dart';
+          import 'ios_screenshots_demo.dart' as gallery;
+
+          Future<void> main() async {
+            final docs = Directory(Platform.environment['HOME']! + '/Documents');
+            final trace = File(docs.path + '/power-gallery-runtime.log');
+            void record(Object value) {
+              trace.writeAsStringSync('$value\n', mode: FileMode.append, flush: true);
+            }
+            record('Dart started: demo=' + const bool.fromEnvironment('POWER_DEMO').toString() +
+                ', capture=' + (Platform.environment['POWER_SCREENSHOTS'] ?? 'absent'));
+            await runZonedGuarded(() async {
+              final binding = WidgetsFlutterBinding.ensureInitialized();
+              record('Documents from platform: ' + (await getApplicationDocumentsDirectory()).path);
+              Timer.periodic(const Duration(seconds: 15), (_) {
+                record('Lifecycle=' + binding.lifecycleState.toString() +
+                    ' root=' + (binding.rootElement != null).toString() +
+                    ' rasterized=' + binding.firstFrameRasterized.toString());
+              });
+              await gallery.main();
+            }, (e, stack) => record('$e\n$stack'),
+            zoneSpecification: ZoneSpecification(print: (self, parent, zone, line) {
+              record(line);
+              parent.print(zone, line);
+            }));
+          }
+          DART
+            python3 - <<'PY'
+          from pathlib import Path
+          import re
+          src = Path("tool/capture-ios-screenshots.sh").read_text()
+          def substitute(old, replacement):
+              global src
+              src, count = re.subn(old, lambda _: replacement, src, flags=re.M)
+              assert count == 1, "Unexpected simulator driver"
+          substitute(r'^device=.*$', 'device="${POWER_CAPTURE_DEVICE:?}"')
+          substitute(r'--target tool/ios_screenshots_demo\.dart', '--target tool/store_capture_entry.dart')
+          substitute(r'^SIMCTL_CHILD_POWER_SCREENSHOTS=.* &$',
+              'echo "Simulator application compiled; starting Flutter and waiting for the demo." >&3\n'
+              'SIMCTL_CHILD_POWER_SCREENSHOTS=1 flutter run --debug --no-pub --resident '
+              '-d "$device" --use-application-binary=build/ios/iphonesimulator/Runner.app '
+              '--target tool/store_capture_entry.dart --dart-define=POWER_DEMO=true > build/ios/simulator-console.log 2>&1 &')
+          substitute(r'^container=\$\(xcrun simctl get_app_container.*$', '''container=''
+          for check in {1..120}; do
+            container=$(xcrun simctl get_app_container "$device" com.gab.power.power data 2>/dev/null || true)
+            [[ -n "$container" && -f "$container/Documents/power-gallery-runtime.log" ]] && break
+            sleep 1
+          done''')
+          substitute(r'for \(\(attempt=0; attempt<90; attempt\+\+\)\)', 'for ((attempt=0; attempt<120; attempt++))')
+          Path('tool/capture-store-screenshots.sh').write_text(src)
+          PY
+            if ! bash tool/capture-store-screenshots.sh; then
+              echo 'Collecting isolated simulator startup and rendering diagnostics.'
+              container=$(xcrun simctl get_app_container "$POWER_CAPTURE_DEVICE" com.gab.power.power data 2>/dev/null || true)
+              if [[ -n "$container" && -d "$container/Documents" ]]; then
+                for item in power-capture-request.json power-capture-ready.json power-gallery-runtime.log; do
+                  if [[ -f "$container/Documents/$item" ]]; then
+                    printf '%s\n' "$item"
+                    tail -c 18000 "$container/Documents/$item"
+                  else
+                    printf 'Missing %s\n' "$item"
+                  fi
+                done
+              fi
+              tail -c 12000 build/ios/simulator-console.log || true
+              xcrun simctl spawn "$POWER_CAPTURE_DEVICE" log show --last 6m --style compact --predicate 'process == "Runner"' 2>&1 | tail -c 16000 || true
+              if xcrun simctl io "$POWER_CAPTURE_DEVICE" screenshot "$RUNNER_TEMP/capture-failed.png"; then
+                sips -Z 400 -s format jpeg "$RUNNER_TEMP/capture-failed.png" --out "$RUNNER_TEMP/capture-failed.jpg" >/dev/null
+                echo 'PRIVATE_SIMULATOR_PREVIEW_BEGIN'
+                base64 -i "$RUNNER_TEMP/capture-failed.jpg"
+                echo 'PRIVATE_SIMULATOR_PREVIEW_END'
+              fi
+              exit 1
+            fi
             python3 - <<'PY'
           import glob, os, struct
           paths = glob.glob('build/ios/screenshots/iphone-*.png')
